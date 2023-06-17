@@ -1,6 +1,7 @@
 import fastify from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import userRoutes from './routes/usersRoutes.js';
+import fastifyCors from '@fastify/cors'; // Mettez à jour l'importation ici
 
 const app = fastify();
 
@@ -17,6 +18,12 @@ app.get('/', async (request, reply) => {
     } catch(err) {
         console.error(err);
     }
+});
+
+app.register(fastifyCors, {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: '*'
 });
 
 const start = async () => {

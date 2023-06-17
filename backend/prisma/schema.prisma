@@ -9,6 +9,7 @@ datasource db {
 
 model Users {
   id        Int       @id @default(autoincrement())
+  username  String    @unique(map: "username") @db.VarChar(255)
   email     String    @unique(map: "email") @db.VarChar(255)
   password  String    @db.VarChar(255)
   createdAt DateTime? @default(now()) @db.DateTime(0)
