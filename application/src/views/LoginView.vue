@@ -12,12 +12,18 @@
 </template>
 
 <script setup>
+import { loginUser } from '../services/users'
 import { ref } from 'vue'
 
 const username = ref('')
 const password = ref('')
 
-const login = () => {
-    console.log('Login :', username.value, password.value)
+const login = async () => {
+    try {
+        console.log('Try to login...')
+        await loginUser(username.value, password.value)
+    } catch (error) {
+        console.error('Login failed:', error)
+    }
 }
 </script>

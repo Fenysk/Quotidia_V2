@@ -1,8 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 
-// Permet de crypter le mot de passe
-import { hashPassword } from './passwordUtils.js';
-
 const prisma = new PrismaClient();
 
 export const getUsers = async () => {
@@ -22,17 +19,6 @@ export const getUserById = async (id) => {
   } catch (error) {
     console.error('Error retrieving user by ID:', error);
     throw new Error('Failed to retrieve user by ID');
-  }
-};
-
-export const createUser = async (data) => {
-  try {
-    const hashedPassword = await hashPassword(data.password); // On crypte le mot de passe
-    const user = await prisma.users.create({ data: { ...data, password: hashedPassword } }); // On enregistre le mot de passe crypté
-    return user;
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw new Error('Failed to create user');
   }
 };
 

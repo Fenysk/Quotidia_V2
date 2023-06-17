@@ -1,7 +1,9 @@
 import fastify from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import userRoutes from './routes/usersRoutes.js';
-import fastifyCors from '@fastify/cors'; // Mettez à jour l'importation ici
+import authRoutes from './routes/authRoutes.js';
+
+import fastifyCors from '@fastify/cors'; // Réglage des CORS
 
 const app = fastify();
 
@@ -9,6 +11,7 @@ const prisma = new PrismaClient();
 app.decorate('prisma', prisma);
 
 userRoutes(app);
+authRoutes(app);
 
 // GET
 app.get('/', async (request, reply) => {
