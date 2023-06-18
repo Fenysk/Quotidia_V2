@@ -13,7 +13,7 @@
 
 <script setup>
 import router from '../router/router.js'
-import { loginUser } from '../services/users'
+import { loginUser } from '../services/auth'
 import { ref } from 'vue'
 
 const username = ref('')

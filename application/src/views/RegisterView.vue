@@ -13,7 +13,7 @@
 </template>
   
 <script setup>
-import { registerUser } from '../services/users';
+import { registerUser } from '../services/auth';
 import { ref } from 'vue';
 
 const username = ref('');
