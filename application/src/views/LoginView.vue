@@ -12,6 +12,7 @@
 </template>
 
 <script setup>
+import router from '../router/router.js'
 import { loginUser } from '../services/users'
 import { ref } from 'vue'
 
@@ -22,6 +23,7 @@ const login = async () => {
     try {
         console.log('Try to login...')
         await loginUser(username.value, password.value)
+        router.push('/')
     } catch (error) {
         console.error('Login failed:', error)
     }

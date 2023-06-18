@@ -2,13 +2,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import DashboardView from '../views/DashboardView.vue'
 import ErrorView from '../views/ErrorView.vue'
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        redirect: '/login'
+        redirect: '/dashboard'
     },
 
     {
@@ -20,6 +21,15 @@ const routes = [
         path: '/register',
         name: 'register',
         component: RegisterView
+    },
+
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: DashboardView,
+        meta: {
+            requiresAuth: true
+        }
     },
 
     {
@@ -35,4 +45,16 @@ const router = createRouter({
     routes
 })
 
-export default router
+router.beforeEach((to, from, next) => {
+    const isLoggedIn = localStorage.getItem('token');
+
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
+        next({ name: 'login' });
+    } else {
+        // Autoriser l'accès à la route
+        next();
+    }
+});
+
+export default router;
