@@ -8,9 +8,43 @@ datasource db {
 }
 
 model Users {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique(map: "username") @db.VarChar(255)
-  email     String    @unique(map: "email") @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  createdAt DateTime? @default(now()) @db.DateTime(0)
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  notes     Note[]
+}
+
+model Tag {
+  id    Int     @id @default(autoincrement())
+  label String
+  color String?
+  notes NoteTag[]
+}
+
+model Note {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  title        String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deadlineAt   DateTime?
+  duration     Int?
+  reminderDelay Int?
+  text         String?
+  state        String?
+  importance   Int?
+  user         Users     @relation(fields: [userId], references: [id])
+  tags         NoteTag[]
+}
+
+model NoteTag {
+  noteId Int
+  tagId  Int
+  note   Note @relation(fields: [noteId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([noteId, tagId])
 }

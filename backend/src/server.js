@@ -13,7 +13,7 @@ app.decorate('prisma', prisma);
 userRoutes(app);
 authRoutes(app);
 
-// GET
+// GET pour tester le serveur
 app.get('/', async (request, reply) => {
     try {
         console.log('GET /');
