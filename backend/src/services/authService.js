@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import { generateToken } from './tokenUtils.js';
 
-import bcrypt from 'bcrypt'; // Permet de crypter le mot de passe
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -24,6 +25,7 @@ export const registerUser = async (username, email, password) => {
 export const loginUser = async (username, password) => {
   try {
     const user = await prisma.users.findUnique({ where: { username } });
+    
     if (!user) {
       throw new Error('User not found');
     }
@@ -31,7 +33,10 @@ export const loginUser = async (username, password) => {
     if (!isPasswordValid) {
       throw new Error('Invalid password');
     }
-    return user;
+
+    const token = generateToken(user);
+
+    return { user, token };
   } catch (error) {
     console.error('Error logging in user:', error);
     throw new Error('Login failed');
