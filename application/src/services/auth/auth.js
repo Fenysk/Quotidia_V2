@@ -1,5 +1,5 @@
 import axios from 'axios';
-import config from '../config/config';
+import config from '../../config/config';
 
 const API_URL = config.mode === 'development' ? config.API_URL_DEV : config.API_URL_PROD;
 

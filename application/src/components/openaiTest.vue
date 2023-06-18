@@ -1,0 +1,21 @@
+<template>
+    <div>
+        <h1>OpenAI Test</h1>
+        <button @click="test(message)">Test</button>
+        <p>{{ response }}</p>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { openaiTest } from '../services/openai/test';
+
+const message = "Test";
+const response = ref("");
+
+const test = async (message) => {
+    const res = await openaiTest(message);
+    console.log(res);
+    response.value = res;
+};
+</script>
