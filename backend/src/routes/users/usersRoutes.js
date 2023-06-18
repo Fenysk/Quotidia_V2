@@ -1,4 +1,4 @@
-import { getUsers, getUserById, updateUser, deleteUser } from '../services/usersService.js';
+import { getUsers, getUserById, updateUser, deleteUser } from '../../services/users/usersService.js';
 
 export default function userRoutes(app) {
 
