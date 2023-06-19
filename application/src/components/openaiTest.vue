@@ -19,7 +19,6 @@ const response = ref("");
 
 const test = async (message) => {
     const res = await openaiTest(message);
-    console.log(res);
     response.value = res;
 };
 </script>

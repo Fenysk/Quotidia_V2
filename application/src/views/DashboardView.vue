@@ -3,12 +3,14 @@
         <h1>Dashboard</h1>
         <button @click="disconnect">Se déconnecter</button>
         <openaiTest />
+        <quickEntry />
     </div>
 </template>
 
 <script setup>
 import router from '../router/router.js'
 import openaiTest from '../components/openaiTest.vue';
+import quickEntry from '../components/quickEntry.vue';
 
 const disconnect = () => {
     console.log('Try to disconnect...')

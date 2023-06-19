@@ -1,10 +1,10 @@
 import fastify from 'fastify';
 import { PrismaClient } from '@prisma/client';
-import userRoutes from './routes/users/usersRoutes.js';
-import authRoutes from './routes/auth/authRoutes.js';
-import openaiRoutes from './routes/openai/openaiRoutes.js';
-
-import fastifyCors from '@fastify/cors'; // Réglage des CORS
+import { userRoutes } from './components/users/index.js';
+import { authRoutes } from './components/auth/index.js';
+import { openaiRoutes } from './components/openai/index.js';
+import { quickEntryRoutes } from './components/quickEntry/index.js';
+import cors from './middleware/cors.js';
 
 const app = fastify();
 
@@ -14,6 +14,9 @@ app.decorate('prisma', prisma);
 userRoutes(app);
 authRoutes(app);
 openaiRoutes(app);
+quickEntryRoutes(app);
+
+cors(app);
 
 // GET pour tester le serveur
 app.get('/', async (request, reply) => {
@@ -25,12 +28,7 @@ app.get('/', async (request, reply) => {
     }
 });
 
-// Réglage des CORS
-app.register(fastifyCors, {
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: '*'
-});
+
 
 const start = async () => {
     try {

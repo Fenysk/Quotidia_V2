@@ -1,5 +1,5 @@
-import { openaiChat } from '../../services/openai/openaiService.js';
-import { middlewareToken } from '../../utils/tokenUtils.js';
+import { openaiChat } from './openaiService.js';
+import { middlewareToken } from '../../middleware/token.js';
 
 export default function openaiRoutes(app) {
 

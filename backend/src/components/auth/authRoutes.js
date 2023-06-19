@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from '../../services/auth/authService.js';
+import { registerUser, loginUser } from './authService.js';
 
 export default function authRoutes(app) {
 
