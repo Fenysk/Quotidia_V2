@@ -4,6 +4,7 @@ dist/
 build/
 
 # Fichiers
+*.py
 .env
 .DS_Store
 *.log
