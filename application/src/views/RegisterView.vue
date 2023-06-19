@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Login</h1>
+        <h1>Register</h1>
         <form @submit.prevent="register">
             <input type="text" v-model="username" placeholder="Username" />
             <input type="email" v-model="email" placeholder="Email" />
@@ -13,6 +13,7 @@
 </template>
   
 <script setup>
+import router from '../router/router.js';
 import { registerUser } from '../services/auth/auth';
 import { ref } from 'vue';
 
@@ -24,6 +25,7 @@ const register = async () => {
     try {
         console.log('Try to register...');
         await registerUser(username.value, email.value, password.value);
+        router.push('/');
     } catch (error) {
         console.error('Registration failed:', error);
     }

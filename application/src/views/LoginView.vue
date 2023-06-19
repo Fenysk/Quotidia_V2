@@ -2,9 +2,9 @@
     <div>
         <h1>Login</h1>
         <form @submit.prevent="login">
-        <input type="text" v-model="username" placeholder="Username" />
-        <input type="password" v-model="password" placeholder="Password" />
-        <button type="submit">Login</button>
+            <input type="text" v-model="username" placeholder="Username" />
+            <input type="password" v-model="password" placeholder="Password" />
+            <button type="submit">Login</button>
         </form>
 
         <button @click="$router.push('/register')">Je préfère m'inscrire</button>

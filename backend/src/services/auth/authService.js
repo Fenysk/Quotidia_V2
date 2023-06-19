@@ -15,7 +15,10 @@ export const registerUser = async (username, email, password) => {
         password: hashedPassword,
       },
     });
-    return user;
+
+    const token = generateToken(user);
+
+    return { user, token };
   } catch (error) {
     console.error('Error registering user:', error);
     throw new Error('Failed to register user');
