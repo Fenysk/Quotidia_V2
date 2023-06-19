@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { generateToken } from './tokenUtils.js';
+import { generateToken } from '../../utils/tokenUtils.js';
 
 import bcrypt from 'bcrypt';
 

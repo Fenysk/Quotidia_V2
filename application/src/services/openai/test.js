@@ -5,10 +5,20 @@ const API_URL = config.mode === 'development' ? config.API_URL_DEV : config.API_
 
 export const openaiTest = async (message) => {
     try {
+        const userToken = localStorage.getItem('token');
+
         console.log('Try to test openai...')
-        const response = await axios.post(`${API_URL}/openai/chat`, {
-            message: message
-        });
+        const response = await axios.post(
+            `${API_URL}/openai/chat`,
+            {
+                message: message
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${userToken}`,
+                }
+            }
+        );
 
         console.log('OpenAI test successful :\n', response.data);
         return response.data;
