@@ -4,14 +4,7 @@
     border-solid border-2 border-gray-400
     p-4 m-4
     ">
-        <h1 class="text-2xl font-bold">CRUDnotes</h1>
-        <p>CRUDnotes is a component.</p>
-
-        <form class="flex flex-col">
-            <input type="text" placeholder="Title" />
-            <input type="text" placeholder="Content" />
-            <button type="submit">Add Note</button>
-        </form>
+        <h1>Notes</h1>
 
         <ul>
             <li class="border-2 border-solid my-2" v-for="note in notes" :key="note.id">
@@ -21,7 +14,8 @@
                 <p>Updated at : {{ formatDate(new Date(note.updatedAt)) }}</p>
                 <p>Titre : {{ note.title }}</p>
                 <p>Contenu : {{ note.text }}</p>
-                <p>Deadline : {{ formatDate(new Date(note.deadlineAt)) }}</p>
+                <p v-if="note.deadlineAt">Deadline : {{ formatDate(new Date(note.deadlineAt)) }}</p>
+                <p v-if="note.reminderDelay">Rappel : {{ note.reminderDelay }} minutes avant.</p>
                 <button @click="archiveNote(note.id)">Archiver</button>
                 <button @click="deleteNote(note.id)">Supprimer</button>
             </li>

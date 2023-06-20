@@ -1,9 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { testOpenaiFunctions } from '../openai/openaiService.js';
 import { createNoteFromEntry } from '../notes/notesService.js';
-import { addDeadlineToNote } from '../../services/noteAttributes.js';
-
-const prisma = new PrismaClient();
+import { addDeadlineToNote, addReminderDelayToNote } from '../../services/noteAttributes.js';
 
 export const treatEntry = async (userId, entry) => {
     try {
@@ -25,8 +22,11 @@ export const treatEntry = async (userId, entry) => {
         if (functionArgs.isEvent || functionArgs.isTask) {
             console.log('isEvent ou isTask');
 
-            const updatedNote = await addDeadlineToNote(noteConfirmation.id, entry);
-            console.log('Note à jour :', updatedNote);
+            const updatedNotewithDeadline = await addDeadlineToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNotewithDeadline);
+
+            const updatedNoteWithReminderDelay = await addReminderDelayToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNoteWithReminderDelay);
 
         }
         if (functionArgs.hasTasks) {

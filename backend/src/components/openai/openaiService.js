@@ -171,7 +171,7 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
     functions = [
       {
         name: 'addDeadlineToNote',
-        description: 'Ajouter une deadline à une note',
+        description: 'Ajouter une deadline à la note',
         parameters: {
           type: 'object',
           properties: {
@@ -182,6 +182,25 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
           },
           required: ['deadline']
         },
+      }
+    ];
+  } else if (attribute === 'reminderDelay') {
+    promptSystem = `You receive a task or event from the user, your goal is to determine the referenced reminder delay.`;
+
+    functions = [
+      {
+        name: 'addReminderDelayToNote',
+        description: 'Ajouter une estimation de délai de rappel à la note',
+        parameters: {
+          type: 'object',
+          properties: {
+            reminderDelay: {
+              type: 'number',
+              description: 'Estimation du délai de rappel en minutes. Le délai peut aller jusqu\'à 1 mois. Exemple : si le rappel doit être executé 2 jours avant, la valeur sera 2880.'
+            },
+          },
+          required: ['reminderDelay']
+        }
       }
     ];
   }

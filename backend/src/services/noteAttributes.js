@@ -13,7 +13,7 @@ export const addDeadlineToNote = async (noteId, entry) => {
 
     // Appliquer changement de timezone
     const timezoneOffset = deadline.getTimezoneOffset();
-    deadline.setHours(deadline.getHours() - (timezoneOffset / 60)); // On convertit en heure locale
+    deadline.setHours(deadline.getHours() + (timezoneOffset / 60)); // On convertit en heure locale
 
     console.log('Deadline :', deadline);
 
@@ -28,4 +28,26 @@ export const addDeadlineToNote = async (noteId, entry) => {
     });
 
     return updatedNoteWithDeadline;
+};
+
+export const addReminderDelayToNote = async (noteId, entry) => {
+    const response = await askAttributeToOpenai(noteId, 'reminderDelay', entry);
+
+    const functionCall = response.data.choices[0].message.function_call;
+    const argumentsObject = JSON.parse(functionCall.arguments);
+    const reminderDelay = argumentsObject.reminderDelay;
+    
+    console.log('Reminder delay :', reminderDelay);
+
+    // Mise à jour de la note
+    const updatedNoteWithReminderDelay = await prisma.note.update({
+        where: {
+            id: noteId,
+        },
+        data: {
+            reminderDelay: reminderDelay,
+        },
+    });
+
+    return updatedNoteWithReminderDelay;
 };
