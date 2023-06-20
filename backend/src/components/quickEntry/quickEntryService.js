@@ -6,23 +6,38 @@ const prisma = new PrismaClient();
 
 export const treatEntry = async (userId, entry) => {
     try {
+        // 1. On récupère les différents attributs via l'API OpenAI
+        const openaiResponse = await testOpenaiFunctions(userId, entry);
+        const functionCall = openaiResponse.choices[0].message.function_call;
 
-        // 1. On demande à OpenAI les fonctions à executer
+        const functionArgs = JSON.parse(functionCall.arguments);
+        console.log('Function :', functionCall);
+        console.log('Arguments :', functionArgs);
 
-        const response = await testOpenaiFunctions(userId, entry);
-        const functions = response.choices[0].message.function_call;
+        // 2. On vérifie si c'est une question ou non
+        if (functionArgs.isQuestion === false) {
 
-        console.log('Functions :', functions);
-        
-        const functionName = functions.name;
-        const functionArguments = JSON.parse(functions.arguments);
+            // 3. Si ce n'est pas une question, on crée la note
+            const noteConfirmation = await createNoteFromEntry(userId, functionArgs);
 
-        // 2. On execute les fonctions
+            console.log('Note créée :', noteConfirmation);
 
-        if (functionName === 'createNote') {
-            const confirmation = createNoteFromEntry(userId, functionArguments);
-            return confirmation;
+            // 4. On execute les demandes des arguments
+            if (functionArgs.isEvent || functionArgs.isTask) {
+                console.log('isEvent ou isTask');
+            }
+            if (functionArgs.hasTasks) {
+                console.log('hasTasks');
+            }
+
+        } else {
+
+            // 3. Si c'est une question, on la traite
+            console.log('isQuestion');
+            return 'isQuestion';
         }
+
+        return noteConfirmation;
 
     } catch (error) {
         console.error('Error retrieving entry:', error);

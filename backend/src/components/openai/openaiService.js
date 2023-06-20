@@ -56,7 +56,7 @@ export const testOpenaiFunctions = async (userId, message) => {
   const promptSystem = `  
   {
     "context": {
-      "role": "Tu es une machine qui reçois des saisies et tu dois attribuer les diverses informations à la note. Toutes les informations de la note doivent être renseignées ! Aucune information ne doit être inventée comme la deadline, ...!",
+      "role": "Tu es une machine qui extrait des informations à partir de notes d'utilisateur. Aucune information ne doit être inventée et toutes les informations doivent être saisies ! Corrige les fautes de syntaxes. La fonction createNote est obligatoire ! Ignore les tests.",
       "currentDate": "${currentDate.toISOString()}",
       "currentWeekday": "${currentDate.toLocaleDateString('fr-FR', { weekday: 'long' })}",
       "tagsAvailable": ["Idees", "Citations", "Travail"]
@@ -89,8 +89,24 @@ export const testOpenaiFunctions = async (userId, message) => {
             type: 'string',
             description: 'Texte de la note'
           },
+          isQuestion: {
+            type: 'boolean',
+            description: 'La note est-elle une question ?'
+          },
+          isEvent: {
+            type: 'boolean',
+            description: 'La note est-elle un événement ?'
+          },
+          isTask: {
+            type: 'boolean',
+            description: 'La note est-elle une tâche ?'
+          },
+          hasTasks: {
+            type: 'boolean',
+            description: 'La note contient-elle des tâches ?'
+          },
         },
-        required: ['title', 'text'],
+        required: ['title', 'isQuestion', 'isEvent', 'isTask', 'hasTasks']
       },
     }
   ];

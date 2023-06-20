@@ -25,7 +25,6 @@ const entries = ref([]);
 const submitEntry = async () => {
 
     saveEntryToLocalStorage(userInput.value); // On sauvegarde l'entrée dans le local storage
-    entries.value = getEntriesFromLocalStorage(); // On récupère les entrées du local storage
     
     treatEntry(userInput.value); // On traite les entrées
 

@@ -16,13 +16,18 @@ model Users {
   updatedAt        DateTime? @default(now()) @updatedAt @db.DateTime(0)
   openaiTokenUsage Int?      @default(0)
   notes            Note[]
+  Tag              Tag[]
 }
 
 model Tag {
-  id    Int       @id @default(autoincrement())
-  label String?   @db.VarChar(255)
-  color String?   @db.VarChar(255)
-  notes NoteTag[]
+  id     Int       @id @default(autoincrement())
+  userId Int?
+  label  String?   @db.VarChar(255)
+  color  String?   @db.VarChar(255)
+  notes  NoteTag[]
+  Users  Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Tag_ibfk_1")
+
+  @@index([userId], map: "userId")
 }
 
 model Note {
