@@ -58,6 +58,16 @@ export const treatEntry = async (entry) => {
         );
 
         console.log('Entry treated successful :\n', response.data);
+
+        // On supprime l'entrée du localStorage
+        const entries = getEntriesFromLocalStorage(); // On récupère les entrées du localStorage
+        
+        const newEntries = entries.filter((entryInLocalStorage) => { // On filtre les entrées pour ne garder que celles qui ne correspondent pas à l'entrée traitée
+            return entryInLocalStorage !== entry; // On compare les entrées en tant que chaînes de caractères
+        });
+        
+        localStorage.setItem('entries', JSON.stringify(newEntries)); // On sauvegarde les nouvelles entrées dans le localStorage
+
         return response;
 
     } catch (error) {

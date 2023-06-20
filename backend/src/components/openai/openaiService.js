@@ -67,17 +67,12 @@ export const testOpenaiFunctions = async (userId, message) => {
   const promptUser = message;
 
 
-  console.log('promptUser :', promptUser);
-
-
   messages.push({ role: "system", content: promptSystem });
 
   // const promptExamples = {};
   // prompts.push(promptExamples);
 
   messages.push({ role: "user", content: promptUser });
-
-
 
   const functions = [
     {
@@ -100,7 +95,8 @@ export const testOpenaiFunctions = async (userId, message) => {
     }
   ];
 
-
+  console.log('messages:', messages);
+  console.log('functions:', functions);
 
   try {
     // Envoi la saisie à OpenAI pour obtenir les fonctions à exécuter
@@ -112,7 +108,7 @@ export const testOpenaiFunctions = async (userId, message) => {
       temperature: 0.5,
     });
 
-    console.log('Réponse d\'OpenAI reçue !');
+    console.log('Réponse d\'OpenAI reçue :\n\n', response.data.choices[0].message);
     return response.data;
 
   } catch (error) {

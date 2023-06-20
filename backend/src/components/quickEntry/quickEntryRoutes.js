@@ -13,7 +13,9 @@ export default function quickEntryRoutes(app) {
             console.log('POST /quickEntry');
             
             const entry = request.body.entry;
-            const treatedEntry = await treatEntry(request.userId, entry);
+            const userId = request.userId;
+
+            const treatedEntry = await treatEntry(userId, entry);
 
             reply.send(treatedEntry);
         });

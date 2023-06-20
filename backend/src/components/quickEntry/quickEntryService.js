@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { testOpenaiFunctions } from '../openai/openaiService.js';
+import { createNoteFromEntry } from '../notes/notesService.js';
 
 const prisma = new PrismaClient();
 
@@ -7,6 +8,7 @@ export const treatEntry = async (userId, entry) => {
     try {
 
         // 1. On demande à OpenAI les fonctions à executer
+
         const response = await testOpenaiFunctions(userId, entry);
         const functions = response.choices[0].message.function_call;
 
@@ -17,12 +19,11 @@ export const treatEntry = async (userId, entry) => {
 
         // 2. On execute les fonctions
 
+        if (functionName === 'createNote') {
+            const confirmation = createNoteFromEntry(userId, functionArguments);
+            return confirmation;
+        }
 
-        // 3. On enregistre les modifications
-
-        // 4. On retourne l'entry modifiée
-
-        return functions;
     } catch (error) {
         console.error('Error retrieving entry:', error);
         throw new Error('Failed to retrieve entry');

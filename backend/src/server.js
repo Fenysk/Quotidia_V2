@@ -4,6 +4,7 @@ import { userRoutes } from './components/users/index.js';
 import { authRoutes } from './components/auth/index.js';
 import { openaiRoutes } from './components/openai/index.js';
 import { quickEntryRoutes } from './components/quickEntry/index.js';
+import { notesRoutes } from './components/notes/index.js';
 import cors from './middleware/cors.js';
 
 const app = fastify();
@@ -15,6 +16,7 @@ userRoutes(app);
 authRoutes(app);
 openaiRoutes(app);
 quickEntryRoutes(app);
+notesRoutes(app);
 
 cors(app);
 
