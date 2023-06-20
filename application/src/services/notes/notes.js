@@ -22,3 +22,26 @@ export const getNotes = async () => {
         throw new Error('Registration failed');
     }
 };
+
+export const setStateNote = async (noteId, state) => {
+    try {
+        console.log('Try to set state note');
+        const response = await axios.patch(
+            `${API_URL}/notes/${noteId}`,
+            {
+                state: state
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Note state set :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration failed:', error);
+        throw new Error('Registration failed');
+    }
+};

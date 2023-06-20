@@ -21,7 +21,8 @@
                 <p>Updated at : {{ note.updatedAt }}</p>
                 <p>Titre : {{ note.title }}</p>
                 <p>Contenu : {{ note.text }}</p>
-                <button @click="deleteNote(note.id)">Delete</button>
+                <button @click="archiveNote(note.id)">Archiver</button>
+                <button @click="deleteNote(note.id)">Supprimer</button>
             </li>
         </ul>
     </div>
@@ -29,7 +30,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getNotes } from '../services/notes/notes.js'
+import { getNotes, setStateNote } from '../services/notes/notes'
 
 const notes = ref([])
 
@@ -37,12 +38,18 @@ const addNote = () => {
 
 }
 
-const deleteNote = () => {
-    
+const updateNote = (noteId) => {
+    console.log(noteId)
 }
 
-const updateNote = () => {
+const deleteNote = async (noteId) => {
+    await setStateNote(noteId, 'deleted')
+    notes.value = await getNotes()
+}
 
+const archiveNote = async (noteId) => {
+    await setStateNote(noteId, 'archived')
+    notes.value = await getNotes()
 }
 
 
