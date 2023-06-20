@@ -1,4 +1,4 @@
-import { openaiChat } from './openaiService.js';
+import { openaiChat, testOpenaiFunctions } from './openaiService.js';
 import openaiRoutes from './openaiRoutes.js';
 
-export { openaiChat, openaiRoutes };
+export { openaiChat, testOpenaiFunctions, openaiRoutes };

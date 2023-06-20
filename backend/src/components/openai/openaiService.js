@@ -7,7 +7,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const openaiChat = async (userId, message) => {
+export const openaiChat = async (userId, message) => {
   try {
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo-0613",
@@ -40,4 +40,85 @@ const openaiChat = async (userId, message) => {
   }
 };
 
-export { openaiChat };
+
+
+
+
+export const testOpenaiFunctions = async (userId, message) => {
+
+  const messages = []
+
+  const currentDate = new Date();
+  const timezoneOffset = currentDate.getTimezoneOffset();
+
+  currentDate.setHours(currentDate.getHours() - (timezoneOffset / 60));
+
+  const promptSystem = `  
+  {
+    "context": {
+      "role": "Tu es une machine qui reçois des saisies et tu dois attribuer les diverses informations à la note. Toutes les informations de la note doivent être renseignées ! Aucune information ne doit être inventée comme la deadline, ...!",
+      "currentDate": "${currentDate.toISOString()}",
+      "currentWeekday": "${currentDate.toLocaleDateString('fr-FR', { weekday: 'long' })}",
+      "tagsAvailable": ["Idees", "Citations", "Travail"]
+    }
+  }
+  `;
+
+  const promptUser = message;
+
+
+  console.log('promptUser :', promptUser);
+
+
+  messages.push({ role: "system", content: promptSystem });
+
+  // const promptExamples = {};
+  // prompts.push(promptExamples);
+
+  messages.push({ role: "user", content: promptUser });
+
+
+
+  const functions = [
+    {
+      name: 'createNote',
+      description: 'Créer une note',
+      parameters: {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+            description: 'Titre de la note'
+          },
+          text: {
+            type: 'string',
+            description: 'Texte de la note'
+          },
+        },
+        required: ['title', 'text'],
+      },
+    }
+  ];
+
+
+
+  try {
+    // Envoi la saisie à OpenAI pour obtenir les fonctions à exécuter
+    const response = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo-0613',
+      messages: messages,
+      functions: functions,
+      function_call: 'auto',
+      temperature: 0.5,
+    });
+
+    console.log('Réponse d\'OpenAI reçue !');
+    return response.data;
+
+  } catch (error) {
+
+    console.error('Error testing OpenAI:', error);
+    throw new Error('Failed to test OpenAI');
+
+  }
+};

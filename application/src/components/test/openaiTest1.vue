@@ -12,13 +12,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import { openaiTest } from '../services/openai/test';
+import { openaiTest1 } from '../../services/openai/test';
 
 const message = "Test";
 const response = ref("");
 
 const test = async (message) => {
-    const res = await openaiTest(message);
+    const res = await openaiTest1(message);
     response.value = res;
 };
 </script>

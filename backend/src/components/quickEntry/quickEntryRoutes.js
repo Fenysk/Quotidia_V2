@@ -5,16 +5,17 @@ export default function quickEntryRoutes(app) {
 
     app.post(
 
-        '/quickEntry',
+        '/quickEntry', // Route
 
-        { preHandler: middlewareToken },
+        { preHandler: middlewareToken }, // Middleware
 
-        async (request, reply) => {
+        async (request, reply) => { // Handler
             console.log('POST /quickEntry');
+            
+            const entry = request.body.entry;
+            const treatedEntry = await treatEntry(request.userId, entry);
 
-            const entry = await treatEntry(request.body.entry);
-
-            reply.send(entry);
+            reply.send(treatedEntry);
         });
 
 }
