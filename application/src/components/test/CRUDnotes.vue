@@ -30,7 +30,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getNotes, setStateNote } from '../services/notes/notes'
+import { getNotes, setStateNote } from '../../services/notes/notes'
 
 const notes = ref([])
 

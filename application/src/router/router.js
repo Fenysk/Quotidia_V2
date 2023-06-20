@@ -4,12 +4,13 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ErrorView from '../views/ErrorView.vue'
+import TestView from '../views/TestView.vue'
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        redirect: '/dashboard'
+        redirect: '/test'
     },
 
     {
@@ -27,6 +28,15 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: DashboardView,
+        meta: {
+            requiresAuth: true
+        }
+    },
+
+    {
+        path: '/test',
+        name: 'test',
+        component: TestView,
         meta: {
             requiresAuth: true
         }

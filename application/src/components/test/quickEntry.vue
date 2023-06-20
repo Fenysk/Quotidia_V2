@@ -6,7 +6,7 @@
     ">
         <p>Qu'avez-vous en tête ?</p>
         <form @submit.prevent="submitEntry">
-            <input type="text" v-model="userInput" />
+            <textarea type="text" v-model="userInput" />
             <button type="submit">Envoyer</button>
         </form>
         <div v-for="entry in entries" :key="entry">
@@ -17,7 +17,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getEntriesFromLocalStorage, saveEntryToLocalStorage, treatEntries, treatEntry } from '../services/quickEntry/quickEntry.js';
+import { getEntriesFromLocalStorage, saveEntryToLocalStorage, treatEntries, treatEntry } from '../../services/quickEntry/quickEntry.js';
 
 const userInput = ref('');
 const entries = ref([]);
