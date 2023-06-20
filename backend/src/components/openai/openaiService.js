@@ -42,8 +42,6 @@ export const openaiChat = async (userId, message) => {
 
 
 
-
-
 export const testOpenaiFunctions = async (userId, message) => {
 
   const messages = []
@@ -51,15 +49,14 @@ export const testOpenaiFunctions = async (userId, message) => {
   const currentDate = new Date();
   const timezoneOffset = currentDate.getTimezoneOffset();
 
-  currentDate.setHours(currentDate.getHours() - (timezoneOffset / 60));
+  currentDate.setHours(currentDate.getHours() + (timezoneOffset / 60));
 
   const promptSystem = `  
   {
     "context": {
-      "role": "Tu es une machine qui extrait des informations à partir de notes d'utilisateur. Aucune information ne doit être inventée et toutes les informations doivent être saisies ! Corrige les fautes de syntaxes. La fonction createNote est obligatoire ! Ignore les tests.",
+      "role": "Tu es une machine qui extrait des informations à partir de notes d'utilisateur. Aucune information ne doit être inventée et toutes les informations doivent être saisies ! Corrige les fautes de syntaxes. La fonction createNote est obligatoire ! Ne réponds JAMAIS à l'utilisateur.",
       "currentDate": "${currentDate.toISOString()}",
-      "currentWeekday": "${currentDate.toLocaleDateString('fr-FR', { weekday: 'long' })}",
-      "tagsAvailable": ["Idees", "Citations", "Travail"]
+      "currentWeekday": "${currentDate.toLocaleDateString('fr-FR', { weekday: 'long' })}"
     }
   }
   `;
@@ -89,10 +86,6 @@ export const testOpenaiFunctions = async (userId, message) => {
             type: 'string',
             description: 'Texte de la note'
           },
-          isQuestion: {
-            type: 'boolean',
-            description: 'La note est-elle une question ?'
-          },
           isEvent: {
             type: 'boolean',
             description: 'La note est-elle un événement ?'
@@ -104,9 +97,9 @@ export const testOpenaiFunctions = async (userId, message) => {
           hasTasks: {
             type: 'boolean',
             description: 'La note contient-elle des tâches ?'
-          },
+          }
         },
-        required: ['title', 'isQuestion', 'isEvent', 'isTask', 'hasTasks']
+        required: ['title', 'isEvent', 'isTask', 'hasTasks']
       },
     }
   ];
@@ -133,4 +126,92 @@ export const testOpenaiFunctions = async (userId, message) => {
     throw new Error('Failed to test OpenAI');
 
   }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
+
+
+  const messages = []
+
+  const currentDate = new Date();
+  const timezoneOffset = currentDate.getTimezoneOffset();
+  currentDate.setHours(currentDate.getHours() + (timezoneOffset / 60)); // On convertit en heure locale
+
+  let promptSystem = ``;
+  let functions = [];
+
+  if (attribute === 'deadline') {
+    promptSystem = `  
+    {
+      "context": {
+        "role": "You receive a task or event from the user, your goal is to determine the referenced deadline. Consider the current time and date. If the time has already passed, consider tomorrow.",
+        "currentDate": "${currentDate.toISOString()}",
+        "currentWeekday": "${currentDate.toLocaleDateString('fr-FR', { weekday: 'long' })}",
+      }
+    }
+    `;
+
+    functions = [
+      {
+        name: 'addDeadlineToNote',
+        description: 'Ajouter une deadline à une note',
+        parameters: {
+          type: 'object',
+          properties: {
+            deadline: {
+              type: 'string',
+              description: 'Date de la deadline au format ISO 8601 UTC-Z'
+            },
+          },
+          required: ['deadline']
+        },
+      }
+    ];
+  }
+
+  const promptUser = taskOrEvent;
+
+
+  messages.push({ role: "system", content: promptSystem });
+  messages.push({ role: "user", content: promptUser });
+
+  console.log('messages:', messages);
+  console.log('functions:', functions);
+
+  try {
+    // Envoi la saisie à OpenAI pour obtenir les fonctions à exécuter
+    const response = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo-0613',
+      messages: messages,
+      functions: functions,
+      function_call: 'auto',
+      temperature: 0.5,
+    });
+
+    return response;
+
+  } catch (error) {
+
+    console.error('Error testing OpenAI:', error);
+    throw new Error('Failed to test OpenAI');
+
+  }
+
 };
