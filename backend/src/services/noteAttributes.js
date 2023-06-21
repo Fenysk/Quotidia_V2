@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export const addDeadlineToNote = async (noteId, entry) => {
     const response = await askAttributeToOpenai(noteId, 'deadline', entry);
-    
+
     // Transformer en date
     const functionCall = response.data.choices[0].message.function_call;
     const argumentsObject = JSON.parse(functionCall.arguments);
@@ -36,7 +36,7 @@ export const addReminderDelayToNote = async (noteId, entry) => {
     const functionCall = response.data.choices[0].message.function_call;
     const argumentsObject = JSON.parse(functionCall.arguments);
     const reminderDelay = argumentsObject.reminderDelay;
-    
+
     console.log('Reminder delay :', reminderDelay);
 
     // Mise à jour de la note
@@ -50,4 +50,34 @@ export const addReminderDelayToNote = async (noteId, entry) => {
     });
 
     return updatedNoteWithReminderDelay;
+};
+
+export const addTasksToNote = async (noteId, entry) => {
+    const response = await askAttributeToOpenai(noteId, 'tasks', entry);
+
+    const functionCall = response.data.choices[0].message.function_call;
+    console.log('Function :', functionCall);
+    const argumentsObject = JSON.parse(functionCall.arguments);
+    console.log('Arguments :', argumentsObject);
+    const tasks = argumentsObject.tasks;
+
+    console.log('Tasks :', tasks);
+
+    tasks.forEach(async (task) => {
+        // determine order number is the index of the task in the array
+        const orderNumber = tasks.indexOf(task) + 1;
+        console.log('orderNumber :', orderNumber);
+
+        const newTask = await prisma.task.create({
+            data: {
+                noteId: noteId,
+                task: task,
+                orderNumber: orderNumber,
+            },
+        });
+
+        console.log('Tâche créée :', newTask);
+    });
+
+    return tasks;
 };

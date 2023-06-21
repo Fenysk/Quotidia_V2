@@ -1,6 +1,6 @@
 import { testOpenaiFunctions } from '../openai/openaiService.js';
 import { createNoteFromEntry } from '../notes/notesService.js';
-import { addDeadlineToNote, addReminderDelayToNote } from '../../services/noteAttributes.js';
+import { addDeadlineToNote, addReminderDelayToNote, addTasksToNote } from '../../services/noteAttributes.js';
 
 export const treatEntry = async (userId, entry) => {
     try {
@@ -31,6 +31,9 @@ export const treatEntry = async (userId, entry) => {
         }
         if (functionArgs.hasTasks) {
             console.log('hasTasks');
+
+            const updatedNoteWithTasks = await addTasksToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNoteWithTasks);
         }
 
         return noteConfirmation;

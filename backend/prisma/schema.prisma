@@ -44,6 +44,7 @@ model Note {
   importance    Int?
   user          Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Note_ibfk_1")
   tags          NoteTag[]
+  Task          Task[]
 
   @@index([userId], map: "userId")
 }
@@ -56,4 +57,20 @@ model NoteTag {
 
   @@id([noteId, tagId])
   @@index([tagId], map: "tagId")
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  noteId      Int?
+  parentId    Int?
+  task        String?   @db.VarChar(255)
+  completedAt DateTime? @db.Date
+  state       String?   @db.VarChar(255)
+  orderNumber Int?
+  Note        Note?     @relation(fields: [noteId], references: [id], onDelete: Cascade, map: "Task_ibfk_1")
+  Task        Task?     @relation("TaskToTask", fields: [parentId], references: [id], map: "Task_ibfk_2")
+  other_Task  Task[]    @relation("TaskToTask")
+
+  @@index([noteId], map: "noteId")
+  @@index([parentId], map: "parentId")
 }

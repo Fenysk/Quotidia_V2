@@ -54,9 +54,9 @@ export const testOpenaiFunctions = async (userId, message) => {
   const promptSystem = `  
   {
     "context": {
-      "role": "Tu es une machine qui extrait des informations à partir de notes d'utilisateur. Aucune information ne doit être inventée et toutes les informations doivent être saisies ! Corrige les fautes de syntaxes. La fonction createNote est obligatoire ! Ne réponds JAMAIS à l'utilisateur.",
+      "role": "You're a machine that extracts information from user notes. No information should be invented, and all information should be entered! Correct any syntax errors. The createNote function is mandatory! NEVER reply to the user. A note cannot NEVER be both an event and a task. The note can be an event and have tasks. If the note contains tasks, the note is NEVER a task.",
       "currentDate": "${currentDate.toISOString()}",
-      "currentWeekday": "${currentDate.toLocaleDateString('fr-FR', { weekday: 'long' })}"
+      "currentWeekday": "${currentDate.toLocaleDateString('en-US', { weekday: 'long' })}"
     }
   }
   `;
@@ -200,6 +200,25 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
             },
           },
           required: ['reminderDelay']
+        }
+      }
+    ];
+  } else if (attribute === 'tasks') {
+    promptSystem = `You receive a note from the user, your goal is to determine the referenced tasks. Sort them in order.`;
+
+    functions = [
+      {
+        name: 'addTasksToNote',
+        description: 'Ajouter des tâches à la note',
+        parameters: {
+          type: 'object',
+          properties: {
+            tasks: {
+              type: 'string',
+              description: 'Liste des tâches à ajouter à la note sous forme de tableau (C\'EST IMPORTANT) exemple : ["Tâche 1", "Tâche 2", "Tâche 3"]'
+            },
+          },
+          required: ['tasks']
         }
       }
     ];

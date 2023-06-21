@@ -34,6 +34,8 @@ const submitEntry = async () => {
 
 onMounted(() => {
     entries.value = getEntriesFromLocalStorage(); // On récupère les entrées du local storage
+
+    //TODO: Vérifier si les entrées n'ont pas déjà été traitées avant de les traiter
     
     if (entries.value.length > 0) { // Si il y a des entrées
         treatEntries(); // alors on les traite

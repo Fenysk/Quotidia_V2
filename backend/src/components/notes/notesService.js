@@ -7,17 +7,28 @@ export const getNotes = async (userId) => {
         const notes = await prisma.note.findMany({
             where: {
                 userId,
-                state: null
+                state: null // On ne récupère que les notes n'étant pas supprimées ni archivées
+            },
+            include: {
+                Task: true // On inclut les tâches associées à la note
             }
         });
-        console.log('notes:', notes);
-        return notes;
+
+        const notesRenamed = notes.map(note => { // On renomme 'Task' en 'tasks'
+            return {
+                ...note,
+                tasks: note.Task,
+                Task: undefined
+            };
+        });
+
+        console.log('notes:', notesRenamed);
+        return notesRenamed;
     } catch (error) {
         console.error('Error retrieving notes:', error);
         throw new Error('Failed to retrieve notes');
     }
 };
-
 
 export const getNoteById = async (userId, noteId) => {
     try {
