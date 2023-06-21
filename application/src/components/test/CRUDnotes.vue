@@ -16,17 +16,23 @@
                 <h4>Texte : {{ note.text }}</h4>
                 <ul>
                     <h5>Tâches</h5>
-                    <li v-for="task in note.tasks.filter(task => task.state === null)" :key="task.id">
-                        <p :class="task.completedAt ? 'line-through' : ''"
-                        >Id : {{ task.id }}</p>
+                    <ol v-for="task in note.tasks.filter(task => task.state === null)" :key="task.id">
+                        <p :class="task.completedAt ? 'line-through' : ''">Id : {{ task.id }}</p>
                         <p>Tâche : {{ task.task }}</p>
                         <button v-if="!task.completedAt" @click="taskDone(task.id)">Terminer</button>
                         <button @click="archiveTask(task.id)">Archiver</button>
                         <button @click="deleteTask(task.id)">Supprimer</button>
-                    </li>
+                    </ol>
                 </ul>
                 <p v-if="note.deadlineAt">Deadline : {{ formatDate(new Date(note.deadlineAt)) }}</p>
                 <p v-if="note.reminderDelay">Rappel : {{ note.reminderDelay }} minutes avant.</p>
+                <p v-if="note.location">Lieu : {{ note.location }}</p>
+                <ul>
+                    <h5>Tags</h5>
+                    <li v-for="tag in note.tags" :key="tag.id">
+                        <p>{{ tag.label }}</p>
+                    </li>
+                </ul>
                 <button @click="archiveNote(note.id)">Archiver</button>
                 <button @click="deleteNote(note.id)">Supprimer</button>
             </li>

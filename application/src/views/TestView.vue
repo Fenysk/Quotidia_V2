@@ -4,8 +4,8 @@
         <h1>Page de test</h1>
         <button @click="disconnect">Se déconnecter</button>
         <CRUDnotes />
-        <openaiTest2 />
         <quickEntry />
+        <openaiTest2 />
         <openaiTest1 />
     </div>
 </template>

@@ -7,10 +7,12 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+let model = 'gpt-3.5-turbo-0613';
+
 export const openaiChat = async (userId, message) => {
   try {
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo-0613",
+      model: model,
       messages: [
         { role: "system", content: "Say exactly 'OK'" },
         { role: "user", content: message }
@@ -54,7 +56,17 @@ export const testOpenaiFunctions = async (userId, message) => {
   const promptSystem = `  
   {
     "context": {
-      "role": "You're a machine that extracts information from user notes. No information should be invented, and all information should be entered! Correct any syntax errors. The createNote function is mandatory! NEVER reply to the user. A note cannot NEVER be both an event and a task. The note can be an event and have tasks. If the note contains tasks, the note is NEVER a task.",
+      "role": "You are a machine tasked with extracting information from user notes. Your goal is to extract accurate information without inventing any details.
+
+      Instructions:
+      1. Correct the syntax errors.
+      2. All the information should be entered.
+      3. Never reply to the user. Your role is solely to extract information from the notes.
+      4. A note can never be both an event and a task simultaneously.
+      5. If a note contains tasks, itself never is a task.
+      6. If a note is event, it can contains tasks.
+      
+      Remember to adhere to these guidelines when processing user notes.",
       "currentDate": "${currentDate.toISOString()}",
       "currentWeekday": "${currentDate.toLocaleDateString('en-US', { weekday: 'long' })}"
     }
@@ -97,23 +109,31 @@ export const testOpenaiFunctions = async (userId, message) => {
           hasTasks: {
             type: 'boolean',
             description: 'La note contient-elle des tâches ?'
+          },
+          hasLocation: {
+            type: 'boolean',
+            description: 'La note contient-elle une localisation ?'
           }
         },
-        required: ['title', 'isEvent', 'isTask', 'hasTasks']
+        required: ['title', 'isEvent', 'isTask', 'hasTasks', 'hasLocation']
       },
     }
   ];
 
+  const function_call = { "name": "createNote" };
+
   console.log('messages:', messages);
   console.log('functions:', functions);
+
+  model = 'gpt-3.5-turbo-0613';
 
   try {
     // Envoi la saisie à OpenAI pour obtenir les fonctions à exécuter
     const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo-0613',
+      model: model,
       messages: messages,
       functions: functions,
-      function_call: 'auto',
+      function_call: function_call,
       temperature: 0.5,
     });
 
@@ -145,7 +165,7 @@ export const testOpenaiFunctions = async (userId, message) => {
 
 
 
-export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
+export const askAttributeToOpenai = async (noteId, attribute, taskOrEvent) => {
 
 
   const messages = []
@@ -156,6 +176,7 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
 
   let promptSystem = ``;
   let functions = [];
+  let function_call = {};
 
   if (attribute === 'deadline') {
     promptSystem = `  
@@ -184,6 +205,11 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
         },
       }
     ];
+
+    function_call = { "name": "addDeadlineToNote" };
+
+    model = 'gpt-4-0613';
+
   } else if (attribute === 'reminderDelay') {
     promptSystem = `You receive a task or event from the user, your goal is to determine the referenced reminder delay.`;
 
@@ -203,6 +229,11 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
         }
       }
     ];
+
+    function_call = { "name": "addReminderDelayToNote" };
+
+    model = 'gpt-3.5-turbo-0613';
+
   } else if (attribute === 'tasks') {
     promptSystem = `You receive a note from the user, your goal is to determine the referenced tasks. Sort them in order.`;
 
@@ -222,6 +253,74 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
         }
       }
     ];
+
+    function_call = { "name": "addTasksToNote" };
+
+    model = 'gpt-3.5-turbo-0613';
+
+  } else if (attribute === 'tags') {
+    // const tags = await getTagsByUserId(userId);
+    const tags = [
+      { "id": 1, "label": "Projets" },
+      { "id": 2, "label": "Idées" },
+      { "id": 3, "label": "Citations" }
+    ];
+
+    // stringify tags
+    const tagsStringified = JSON.stringify(tags);
+
+    console.log('tagsStringified:', tagsStringified);
+
+    promptSystem = `
+    Role: You are an engine tasked with determining the IDs of referenced tags from a given list of tags. Your goal is to process the user's note and extract the tag IDs. Remember not to invent any tags. Expected format : [number, number].
+    TagsListAvailable: ${tagsStringified} (Don\'t invent tagId !!!)
+    `;
+
+    functions = [
+      {
+        name: 'addTagsToNote',
+        description: 'Ajouter des tags à la note',
+        parameters: {
+          type: 'object',
+          properties: {
+            tags: {
+              type: 'string',
+              description: 'Tags array like this: [number, number] (0, 1 or 2 tags maximum. Don\'t invent tagId !!!)'
+            }
+          },
+          required: ['tags']
+        }
+      }
+    ];
+
+    function_call = { "name": "addTagsToNote" };
+
+    model = 'gpt-3.5-turbo-0613';
+
+  } else if (attribute === 'location') {
+    promptSystem = `You receive a note from the user, your goal is to determine the referenced location.`;
+
+    functions = [
+      {
+        name: 'addLocationToNote',
+        description: 'Ajouter une localisation à la note',
+        parameters: {
+          type: 'object',
+          properties: {
+            location: {
+              type: 'string',
+              description: 'Localisation à ajouter à la note'
+            },
+          },
+          required: ['location']
+        }
+      }
+    ];
+
+    function_call = { "name": "addLocationToNote" };
+
+    model = 'gpt-3.5-turbo-0613';
+
   }
 
   const promptUser = taskOrEvent;
@@ -239,7 +338,7 @@ export const askAttributeToOpenai = async (userId, attribute, taskOrEvent) => {
       model: 'gpt-3.5-turbo-0613',
       messages: messages,
       functions: functions,
-      function_call: 'auto',
+      function_call: function_call,
       temperature: 0.5,
     });
 

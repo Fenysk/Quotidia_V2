@@ -4,23 +4,31 @@ const prisma = new PrismaClient();
 
 export const getNotes = async (userId) => {
     try {
+        
         const notes = await prisma.note.findMany({
             where: {
                 userId,
-                state: null // On ne récupère que les notes n'étant pas supprimées ni archivées
+                state: null // On ne récupère que les notes qui ne sont ni supprimées ni archivées
             },
             include: {
-                Task: true // On inclut les tâches associées à la note
+                Task: true, // On inclut les tâches associées à la note
+                tags: {     // Ici, on fait référence à la table de jointure 'NoteTag'
+                    include: {
+                        tag: true // On inclut les tags associés à la note
+                    }
+                }
             }
         });
-
-        const notesRenamed = notes.map(note => { // On renomme 'Task' en 'tasks'
+        
+        const notesRenamed = notes.map(note => { 
             return {
                 ...note,
                 tasks: note.Task,
-                Task: undefined
+                Task: undefined,
+                tags: note.tags.map(noteTag => noteTag.tag), // On utilise 'noteTag.tag' car on passe par la relation 'NoteTag'
             };
         });
+
 
         console.log('notes:', notesRenamed);
         return notesRenamed;

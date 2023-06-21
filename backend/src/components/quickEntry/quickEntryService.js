@@ -1,6 +1,6 @@
 import { testOpenaiFunctions } from '../openai/openaiService.js';
 import { createNoteFromEntry } from '../notes/notesService.js';
-import { addDeadlineToNote, addReminderDelayToNote, addTasksToNote } from '../../services/noteAttributes.js';
+import { addDeadlineToNote, addReminderDelayToNote, addTasksToNote, addTagsToNote, addLocationToNote } from '../../services/noteAttributes.js';
 
 export const treatEntry = async (userId, entry) => {
     try {
@@ -10,8 +10,6 @@ export const treatEntry = async (userId, entry) => {
         const functionCall = openaiResponse.choices[0].message.function_call;
 
         const functionArgs = JSON.parse(functionCall.arguments);
-        console.log('Function :', functionCall);
-        console.log('Arguments :', functionArgs);
 
         // 2. On crée la note
         const noteConfirmation = await createNoteFromEntry(userId, functionArgs);
@@ -19,21 +17,34 @@ export const treatEntry = async (userId, entry) => {
         console.log('Note créée :', noteConfirmation);
 
         // 3. On execute les demandes des arguments
-        if (functionArgs.isEvent || functionArgs.isTask) {
-            console.log('isEvent ou isTask');
 
-            const updatedNotewithDeadline = await addDeadlineToNote(noteConfirmation.id, entry);
-            console.log('Note à jour :', updatedNotewithDeadline);
-
-            const updatedNoteWithReminderDelay = await addReminderDelayToNote(noteConfirmation.id, entry);
-            console.log('Note à jour :', updatedNoteWithReminderDelay);
-
-        }
         if (functionArgs.hasTasks) {
             console.log('hasTasks');
 
-            const updatedNoteWithTasks = await addTasksToNote(noteConfirmation.id, entry);
+            const updatedNoteWithTasks = addTasksToNote(noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithTasks);
+        }
+        if (functionArgs.hasLocation) {
+            console.log('hasLocation');
+
+            const updatedNotewithLocation = addLocationToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNotewithLocation);
+        }
+        
+        if (functionArgs.isEvent || functionArgs.isTask) {
+            console.log('isEvent ou isTask');
+
+            const updatedNotewithDeadline = addDeadlineToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNotewithDeadline);
+
+            const updatedNoteWithReminderDelay = addReminderDelayToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNoteWithReminderDelay);
+
+        } else {
+            console.log('isNote');
+
+            const updatedNotewithTags = addTagsToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNotewithTags);
         }
 
         return noteConfirmation;

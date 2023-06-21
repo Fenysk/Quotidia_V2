@@ -16,6 +16,26 @@ export const registerUser = async (username, email, password) => {
       },
     });
 
+    const tags = await prisma.tag.createMany({
+      data: [
+        {
+          userId: user.id,
+          label: 'Projets',
+          color: 'debe1f',
+        },
+        {
+          userId: user.id,
+          label: 'Idées',
+          color: '1fde35',
+        },
+        {
+          userId: user.id,
+          label: 'Citations',
+          color: '1f62de',
+        }
+      ],
+    });
+
     const token = generateToken(user);
 
     return { user, token };
@@ -28,7 +48,7 @@ export const registerUser = async (username, email, password) => {
 export const loginUser = async (username, password) => {
   try {
     const user = await prisma.users.findUnique({ where: { username } });
-    
+
     if (!user) {
       throw new Error('User not found');
     }

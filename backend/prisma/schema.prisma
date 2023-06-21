@@ -42,6 +42,7 @@ model Note {
   text          String?   @db.Text
   state         String?   @db.VarChar(255)
   importance    Int?
+  location      String?   @db.VarChar(255)
   user          Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Note_ibfk_1")
   tags          NoteTag[]
   Task          Task[]

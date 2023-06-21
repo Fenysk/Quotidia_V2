@@ -81,3 +81,64 @@ export const addTasksToNote = async (noteId, entry) => {
 
     return tasks;
 };
+
+export const addTagsToNote = async (noteId, entry) => {
+
+    while (true) {
+        try {
+            const response = await askAttributeToOpenai(noteId, 'tags', entry);
+            const functionCall = response.data.choices[0].message.function_call;
+            console.log('Function :', functionCall);
+            const argumentsObject = JSON.parse(functionCall.arguments);
+            console.log('Arguments :', argumentsObject);
+            const tagsIds = JSON.parse(argumentsObject.tags);
+            console.log('Tags :', tagsIds);
+
+            tagsIds.forEach(async (tagId) => {
+                const newTag = await prisma.noteTag.create({
+                    data: {
+                        noteId: noteId,
+                        tagId: tagId,
+                    },
+                });
+
+                console.log('Tag créé :', newTag);
+            });
+
+            // Si un id est supérieur à 3, on casse le try/catch pour recommencer
+            tagsIds.forEach((tagId) => {
+                if (tagId > 3) {
+                    throw new Error('Tag id is greater than 3');
+                }
+            });
+            
+            return tagsIds
+        } catch (error) {
+            console.log('Error creating tags :', error);
+            continue;
+        }
+    }
+
+};
+
+export const addLocationToNote = async (noteId, entry) => {
+    const response = await askAttributeToOpenai(noteId, 'location', entry);
+
+    const functionCall = response.data.choices[0].message.function_call;
+    const argumentsObject = JSON.parse(functionCall.arguments);
+    const location = argumentsObject.location;
+
+    console.log('Location :', location);
+
+    // Mise à jour de la note
+    const updatedNoteWithLocation = await prisma.note.update({
+        where: {
+            id: noteId,
+        },
+        data: {
+            location: location,
+        },
+    });
+
+    return updatedNoteWithLocation;
+};
