@@ -1,4 +1,4 @@
-import { openaiChat, testOpenaiFunctions } from './index.js';
+import { openaiChat, getFunctions } from './index.js';
 import { middlewareToken } from '../../middleware/token.js';
 
 export default function openaiRoutes(app) {
@@ -29,7 +29,7 @@ export default function openaiRoutes(app) {
         async (request, reply) => {
             console.log('POST /openai/functionsTest');
             const message = request.body.message;
-            const openaiResponse = await testOpenaiFunctions(request.userId, message);
+            const openaiResponse = await getFunctions(request.userId, message);
 
             reply.send(openaiResponse);
 

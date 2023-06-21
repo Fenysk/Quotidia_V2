@@ -1,11 +1,11 @@
-import { testOpenaiFunctions } from '../openai/openaiService.js';
+import { getFunctions } from '../openai/openaiService.js';
 import { createNoteFromEntry } from '../notes/notesService.js';
 import { addDeadlineToNote, addReminderDelayToNote, addTasksToNote, addTagsToNote, addLocationToNote, addImportanceToNote } from '../../services/noteAttributes.js';
 
 export const treatEntry = async (userId, entry) => {
     try {
         // 1. On récupère les différents attributs via l'API OpenAI
-        const openaiResponse = await testOpenaiFunctions(userId, entry);
+        const openaiResponse = await getFunctions(userId, entry);
 
         const functionCall = openaiResponse.choices[0].message.function_call;
 

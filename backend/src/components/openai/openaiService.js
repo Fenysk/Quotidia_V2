@@ -44,7 +44,7 @@ export const openaiChat = async (userId, message) => {
 
 
 
-export const testOpenaiFunctions = async (userId, message) => {
+export const getFunctions = async (userId, message) => {
 
   const messages = []
 
@@ -60,13 +60,13 @@ export const testOpenaiFunctions = async (userId, message) => {
 
       Instructions:
       1. Correct the syntax errors.
-      2. All the information should be entered.
+      2. All the information should be entered in text.
       3. Never reply to the user. Your role is solely to extract information from the notes.
       4. A note can never be both an event and a task simultaneously.
       5. If a note contains tasks, itself never is a task.
       6. If a note is event, it can contains tasks.
-      
-      Remember to adhere to these guidelines when processing user notes.",
+
+      VERY IMPORTANT : You should respect all these rules.",
       "currentDate": "${currentDate.toISOString()}",
       "currentWeekday": "${currentDate.toLocaleDateString('en-US', { weekday: 'long' })}"
     }
@@ -96,7 +96,7 @@ export const testOpenaiFunctions = async (userId, message) => {
           },
           text: {
             type: 'string',
-            description: 'Texte de la note'
+            description: 'Tout le contenu de la note en format markdown.'
           },
           isEvent: {
             type: 'boolean',
@@ -125,7 +125,7 @@ export const testOpenaiFunctions = async (userId, message) => {
   console.log('messages:', messages);
   console.log('functions:', functions);
 
-  model = 'gpt-3.5-turbo-0613';
+  model = 'gpt-4-0613';
 
   try {
     // Envoi la saisie à OpenAI pour obtenir les fonctions à exécuter
