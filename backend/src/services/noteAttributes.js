@@ -142,3 +142,25 @@ export const addLocationToNote = async (noteId, entry) => {
 
     return updatedNoteWithLocation;
 };
+
+export const addImportanceToNote = async (noteId, entry) => {
+    const response = await askAttributeToOpenai(noteId, 'importance', entry);
+
+    const functionCall = response.data.choices[0].message.function_call;
+    const argumentsObject = JSON.parse(functionCall.arguments);
+    const importance = argumentsObject.importance;
+
+    console.log('Importance :', importance);
+
+    // Mise à jour de la note
+    const updatedNoteWithImportance = await prisma.note.update({
+        where: {
+            id: noteId,
+        },
+        data: {
+            importance: importance,
+        },
+    });
+
+    return updatedNoteWithImportance;
+}

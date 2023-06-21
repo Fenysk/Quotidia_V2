@@ -1,6 +1,6 @@
 import { testOpenaiFunctions } from '../openai/openaiService.js';
 import { createNoteFromEntry } from '../notes/notesService.js';
-import { addDeadlineToNote, addReminderDelayToNote, addTasksToNote, addTagsToNote, addLocationToNote } from '../../services/noteAttributes.js';
+import { addDeadlineToNote, addReminderDelayToNote, addTasksToNote, addTagsToNote, addLocationToNote, addImportanceToNote } from '../../services/noteAttributes.js';
 
 export const treatEntry = async (userId, entry) => {
     try {
@@ -34,11 +34,14 @@ export const treatEntry = async (userId, entry) => {
         if (functionArgs.isEvent || functionArgs.isTask) {
             console.log('isEvent ou isTask');
 
-            const updatedNotewithDeadline = addDeadlineToNote(noteConfirmation.id, entry);
-            console.log('Note à jour :', updatedNotewithDeadline);
+            const updatedNoteWithDeadline = addDeadlineToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNoteWithDeadline);
 
             const updatedNoteWithReminderDelay = addReminderDelayToNote(noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithReminderDelay);
+
+            const updatedNoteWithImportance = addImportanceToNote(noteConfirmation.id, entry);
+            console.log('Note à jour :', updatedNoteWithImportance);
 
         } else {
             console.log('isNote');

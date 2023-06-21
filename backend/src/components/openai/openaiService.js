@@ -321,6 +321,30 @@ export const askAttributeToOpenai = async (noteId, attribute, taskOrEvent) => {
 
     model = 'gpt-3.5-turbo-0613';
 
+  } else if (attribute === 'importance') {
+    promptSystem = `You receive a task or event from the user, your goal is to determine the importance of the note between 1 and 3. (1 = low, 2 = medium, 3 = high). Exemples : a rendez-vous is important, a task to wash the car is neutral, a task to play video games is not important.`;
+
+    functions = [
+      {
+        name: 'addImportanceToNote',
+        description: 'Ajouter une importance à la note',
+        parameters: {
+          type: 'object',
+          properties: {
+            importance: {
+              type: 'number',
+              description: 'Importance de la note entre 1 et 3. (1 = low, 2 = medium, 3 = high)'
+            },
+          },
+          required: ['importance']
+        }
+      }
+    ];
+
+    function_call = { "name": "addImportanceToNote" };
+
+    model = 'gpt-3.5-turbo-0613';
+
   }
 
   const promptUser = taskOrEvent;

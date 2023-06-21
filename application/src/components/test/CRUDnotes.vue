@@ -12,7 +12,8 @@
                 <p>UserId : {{ note.userId }}</p>
                 <p>Created at : {{ formatDate(new Date(note.createdAt)) }}</p>
                 <p>Updated at : {{ formatDate(new Date(note.updatedAt)) }}</p>
-                <h3>Titre : {{ note.title }}</h3>
+                <p v-if="note.importance === 2" :class="'text-yellow-500 font-bold'">Importance : Moyenne</p>
+                <h3 :class="note.importance === 3 ? 'text-red-500 font-bold' : ''">Titre : {{ note.title }}</h3>
                 <h4>Texte : {{ note.text }}</h4>
                 <ul>
                     <h5>Tâches</h5>
