@@ -8,7 +8,7 @@
   v-show="!modalMenuShow"
   v-slot="{ Component }"
   class="
-      absolute top-16 left-0 h-[calc(100vh-4rem)] w-full
+      absolute top-16 left-0 h-[calc(100vh-4rem)] w-full touch-none
       lg:static lg:h-screen
   ">
     <Transition name="page-opacity" mode="out-in">

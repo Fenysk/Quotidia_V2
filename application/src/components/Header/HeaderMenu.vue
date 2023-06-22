@@ -2,20 +2,62 @@
     <div class="
       modalMenu
       fixed top-16 left-0 z-50
-      h-[calc(100vh-4rem)] w-full
+      w-full
       bg-white
   ">
         <nav class="h-full w-full">
-            <ul class="flex flex-col items-center justify-center h-full gap-8">
-                <li>
-                    <router-link @click="openModal('Menu')" class="text-2xl" to="/dashboard">Dashboard</router-link>
+            <ul class="
+                flex flex-col items-center h-full gap-2
+                text-xl
+                mt-16
+            ">
+                <li class="
+                    border-y-2 border-black
+                    py-2 px-[10%]
+                    w-full
+                ">
+                    <router-link @click="openModal('Menu')" to="/dashboard">Dashboard</router-link>
                 </li>
 
-                <li>
-                    <router-link @click="openModal('Menu')" class="text-2xl" to="/test">Test</router-link>
+                <li class="
+                    border-y-2 border-black
+                    py-2 px-[10%]
+                    w-full
+                ">
+                    <router-link @click="openModal('Menu')" to="/notes">Notes</router-link>
                 </li>
 
-                <button @click="disconnect">Se déconnecter</button>
+                <li class="
+                    border-y-2 border-black
+                    py-2 px-[10%]
+                    w-full
+                ">
+                    <router-link @click="openModal('Menu')" to="/calendar">Calendrier</router-link>
+                </li>
+
+                <li class="
+                    border-y-2 border-black
+                    py-2 px-[10%]
+                    w-full
+                ">
+                    <router-link @click="openModal('Menu')" to="/test">Test</router-link>
+                </li>
+
+                <li class="
+                    border-y-2 border-black
+                    py-2 px-[10%]
+                    w-full
+                ">
+                    <router-link @click="openModal('Menu')" to="/journal">Journal</router-link>
+                </li>
+
+                <li class="
+                    border-y-2 border-black
+                    py-2 px-[10%]
+                    w-full
+                ">
+                    <button @click="disconnect">Deconnexion</button>
+                </li>
             </ul>
         </nav>
     </div>
@@ -40,11 +82,19 @@ export default {
         disconnect() {
             console.log('Try to disconnect...')
             localStorage.removeItem('token')
-            
+
             this.$emit('openModal', 'Menu')
-            this.$router.push('/login')            
+            this.$router.push('/login')
         }
     },
 };
 
 </script>
+
+<style lang="scss" scoped>
+@import '../../assets/scss/variables.scss';
+
+.modalMenu {
+    height: calc(100vh - #{$headerHeight} - #{$footerHeight});
+}
+</style>
