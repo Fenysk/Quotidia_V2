@@ -1,13 +1,31 @@
 <template>
     <div id="dashboard" class="
             w-screen
-            h-screen
             bg-gray-300
     ">
 
-        <button @click="router.push('/test')">Aller au test</button>
         <h1>Dashboard</h1>
-        <button @click="disconnect">Se déconnecter</button>
+
+        <h2>Voici le planning du jour</h2>
+        
+        <h3>Matin</h3>
+        <ul>
+            <li>Tâche 1</li>
+            <li>Tâche 2</li>
+        </ul>
+
+        <h3>Après-midi</h3>
+        <ul>
+            <li>Tâche 1</li>
+            <li>Tâche 2</li>
+        </ul>
+
+        <p>Bon vendredi !</p>
+
+        <blockquote>
+            <p>“L'intelligence, c'est la capacité de s'adapter au changement.”</p>
+            <cite>Stephen Hawking</cite>
+        </blockquote>        
 
     </div>
 </template>
@@ -15,13 +33,7 @@
 
 
 <script setup>
-import router from '../router/router.js'
 
-const disconnect = () => {
-    console.log('Try to disconnect...')
-    localStorage.removeItem('token')
-    router.push('/login')
-}
 </script>
 
 
