@@ -5,6 +5,7 @@
             bg-gray-300
     ">
 
+        <button @click="router.push('/test')">Aller au test</button>
         <h1>Dashboard</h1>
         <button @click="disconnect">Se déconnecter</button>
 

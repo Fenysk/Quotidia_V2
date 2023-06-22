@@ -11,18 +11,27 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        redirect: '/dashboard'
+        redirect: '/dashboard',
+        meta: {
+            title: 'Home'
+        }
     },
 
     {
         path: '/login',
         name: 'login',
-        component: LoginView
+        component: LoginView,
+        meta: {
+            title: 'Login'
+        }
     },
     {
         path: '/register',
         name: 'register',
-        component: RegisterView
+        component: RegisterView,
+        meta: {
+            title: 'Register'
+        }
     },
 
     {
@@ -30,6 +39,7 @@ const routes = [
         name: 'dashboard',
         component: DashboardView,
         meta: {
+            title: 'Dashboard',
             requiresAuth: true
         }
     },
@@ -39,6 +49,7 @@ const routes = [
         name: 'test',
         component: TestView,
         meta: {
+            title: 'Test',
             requiresAuth: true
         }
     },
@@ -46,7 +57,10 @@ const routes = [
     {
         path: '/:pathMatch(.*)*',
         name: 'error',
-        component: ErrorView
+        component: ErrorView,
+        meta: {
+            title: '404'
+        }
     }
 
 ]
@@ -57,6 +71,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+    document.title = `${to.meta.title} - Quotidia`;
+
     const hasToken = localStorage.getItem('token');
 
     if (hasToken) {
