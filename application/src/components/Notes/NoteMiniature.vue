@@ -1,7 +1,5 @@
 <template>
-    <a href="#"
-    @click.prevent="goToNote(note.id)"
-    class="note
+    <a href="#" @click.prevent="goToNote(note.id)" class="note
     inline-block
     aspect-square overflow-hidden
     w-[170px] h-[170px] sm:w-[200px] sm:h-[200px]
@@ -22,6 +20,8 @@
         <span class="absolute bottom-1 right-1 text-xs opacity-80" v-if="note.tags[0]">{{ note.tags[0].label }}</span>
         <span v-if="deadlineDate" :class="colorDate" class="absolute bottom-1 left-1 text-xs opacity-80">Pour le {{
             deadlineDate }} à <strong>{{ deadlineHours }}</strong></span>
+        <span class="absolute top-0 left-0 text-xs opacity-30"
+        >{{ note.id }}</span>
     </a>
 </template>
 
@@ -68,7 +68,7 @@ export default {
 
     methods: {
         goToNote(id) {
-            this.$router.push({ name: 'NoteView', params: { id: id } })
+            this.$router.push('/notes/' + id)
         }
     }
 
@@ -99,4 +99,5 @@ export default {
         font-weight: bold;
     }
 
-}</style>
+}
+</style>

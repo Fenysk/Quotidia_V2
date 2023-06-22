@@ -38,9 +38,14 @@ export const getNotes = async (userId) => {
     }
 };
 
-export const getNoteById = async (userId, noteId) => {
+export const getNoteById = async (noteId) => {
     try {
-        const note = await prisma.note.findUnique({ where: { userId_noteId: { userId, noteId } } });
+        const note = await prisma.note.findUnique({
+            where: {
+                id: noteId
+            }
+        });
+        console.log('note:', note);
         return note;
     } catch (error) {
         console.error('Error retrieving note by ID:', error);

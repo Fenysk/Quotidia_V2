@@ -80,6 +80,20 @@ export default {
                     },
                     color: 'yellow'
                 }
+            } else if (this.currentPage && this.currentPage === 'Note') {
+                return {
+                    buttonLeft: {
+                        title: 'Menu',
+                        type: 'menu',
+                        action: () => this.openModal('Menu')
+                    },
+                    buttonRight: {
+                        title: 'Filters',
+                        type: 'filters',
+                        action: () => this.openModal('Filters')
+                    },
+                    color: 'red'
+                }
             } else if (this.currentPage && this.currentPage === '404') {
                 return {
                     buttonLeft: {

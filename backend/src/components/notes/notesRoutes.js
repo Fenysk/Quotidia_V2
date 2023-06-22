@@ -28,11 +28,10 @@ export default function notesRoutes(app) {
 
         async (request, reply) => { // Handler
 
-            const userId = request.userId;
             const noteId = Number(request.params.id);
 
             console.log('GET /notes/:id');
-            const note = await getNoteById(userId, noteId);
+            const note = await getNoteById(noteId);
 
             reply.send(note);
         });

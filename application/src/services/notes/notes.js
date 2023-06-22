@@ -23,6 +23,26 @@ export const getNotes = async () => {
     }
 };
 
+export const getNoteById = async (noteId) => {
+    try {
+        console.log('Try to get note');
+        const response = await axios.get(
+            `${API_URL}/notes/${noteId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Note retrieved :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration failed:', error);
+        throw new Error('Registration failed');
+    }
+};
+
 export const setStateNote = async (noteId, state) => {
     try {
         console.log('Try to set state note');
