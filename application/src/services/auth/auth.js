@@ -39,3 +39,18 @@ export const loginUser = async (email, password) => {
         throw new Error('Login failed');
     }
 };
+
+export const isValidToken = async (token) => {
+    try {
+        console.log('Try to validate token...')
+        const response = await axios.post(`${API_URL}/isValidToken`, {
+            token: token
+        });
+
+        console.log('Token validation successful:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Token validation failed:', error);
+        throw new Error('Token validation failed');
+    }
+};

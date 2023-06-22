@@ -5,12 +5,13 @@ import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ErrorView from '../views/ErrorView.vue'
 import TestView from '../views/TestView.vue'
+import { isValidToken } from '../services/auth/auth.js'
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        redirect: '/test'
+        redirect: '/dashboard'
     },
 
     {
@@ -55,16 +56,40 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach((to, from, next) => {
-    const isLoggedIn = localStorage.getItem('token');
+router.beforeEach(async (to, from, next) => {
+    const hasToken = localStorage.getItem('token');
 
-    if (to.meta.requiresAuth && !isLoggedIn) {
-        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-        next({ name: 'login' });
+    if (hasToken) {
+        try {
+            const resultToken = await isValidToken(hasToken);
+            console.log('isValidToken:', resultToken);
+
+            if (to.meta.requiresAuth && !resultToken) {
+                
+                next({ name: 'login' });
+
+            } else {
+
+                next();
+
+            }
+        } catch (error) {
+            localStorage.removeItem('token');
+
+            console.error('Error:', error);
+            next({ name: 'login' });
+        }
     } else {
-        // Autoriser l'accès à la route
-        next();
+        if(to.meta.requiresAuth){
+            
+            next({ name: 'login' });
+
+        } else {
+            
+            next();
+        }
     }
 });
+
 
 export default router;
