@@ -5,6 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ErrorView from '../views/ErrorView.vue'
 import TestView from '../views/TestView.vue'
+import NotesView from '../views/NotesView.vue'
 import { isValidToken } from '../services/auth/auth.js'
 
 const routes = [
@@ -40,6 +41,16 @@ const routes = [
         component: DashboardView,
         meta: {
             title: 'Dashboard',
+            requiresAuth: true
+        }
+    },
+
+    {
+        path: '/notes',
+        name: 'notes',
+        component: NotesView,
+        meta: {
+            title: 'Notes',
             requiresAuth: true
         }
     },

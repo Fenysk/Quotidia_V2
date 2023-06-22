@@ -1,19 +1,17 @@
 <template>
-    <header class="
+    <header :class="'bg-' + header.color + '-500'"
+    class="
     fixed top-0 left-0 z-50
     flex justify-between items-center w-full
-    bg-gray-100
     touch-none
     lg:hidden
     ">
-        <button @click="buttons.left.action" :class="buttons.left.type === 'none' ? 'invisible' : ''">{{ buttons.left.title
+        <button @click="header.buttonLeft.action" :class="header.buttonLeft.type === 'none' ? 'invisible' : ''">{{ header.buttonLeft.title
         }}
         </button>
-        <h1 class="
-        text-2xl font-bold
-        ">{{ currentPage }}</h1>
-        <button @click="buttons.right.action" :class="buttons.right.type === 'none' ? 'invisible' : ''">{{
-            buttons.right.title }}
+        <h1 class="text-2xl font-bold">{{ currentPage }}</h1>
+        <button @click="header.buttonRight.action" :class="header.buttonRight.type === 'none' ? 'invisible' : ''">{{
+            header.buttonRight.title }}
         </button>
     </header>
 </template>
@@ -39,37 +37,67 @@ export default {
     },
 
     computed: {
-        buttons() {
+        header() {
             if (this.currentPage && this.currentPage === 'Dashboard') {
                 return {
-                    left: {
+                    buttonLeft: {
                         title: 'Menu',
                         type: 'menu',
                         action: () => this.openModal('Menu')
                     },
-                    right: {
+                    buttonRight: {
                         title: 'None',
                         type: 'none',
                         action: () => console.log('None')
-                    }
+                    },
+                    color: 'blue'
                 }
             } else if (this.currentPage && this.currentPage === 'Test') {
                 return {
-                    left: {
+                    buttonLeft: {
                         title: 'Menu',
                         type: 'menu',
                         action: () => this.openModal('Menu')
                     },
-                    right: {
+                    buttonRight: {
+                        title: 'None',
+                        type: 'none',
+                        action: () => console.log('None')
+                    },
+                    color: 'pink'
+                }
+            } else if (this.currentPage && this.currentPage === 'Notes') {
+                return {
+                    buttonLeft: {
+                        title: 'Menu',
+                        type: 'menu',
+                        action: () => this.openModal('Menu')
+                    },
+                    buttonRight: {
                         title: 'Search',
                         type: 'search',
-                        action: () => this.openModal('Search')
-                    }
+                        action: () => this.openModal('Seach')
+                    },
+                    color: 'yellow'
+                }
+            } else if (this.currentPage && this.currentPage === '404') {
+                return {
+                    buttonLeft: {
+                        title: 'Menu',
+                        type: 'menu',
+                        action: () => this.openModal('Menu')
+                    },
+                    buttonRight: {
+                        title: 'None',
+                        type: 'none',
+                        action: () => console.log('None')
+                    },
+                    color: 'gray'
                 }
             } else {
                 return {
-                    left: {},
-                    right: {}
+                    buttonLeft: {},
+                    buttonRight: {}
                 };
             }
         },
