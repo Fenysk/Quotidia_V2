@@ -56,7 +56,7 @@
                     py-2 px-[10%]
                     w-full
                 ">
-                    <button @click="disconnect">Deconnexion</button>
+                    <router-link @click="openModal('Menu')" to="/account">Mon compte</router-link>
                 </li>
             </ul>
         </nav>
@@ -78,14 +78,6 @@ export default {
         openModal(modal) {
             this.$emit('openModal', modal)
         },
-
-        disconnect() {
-            console.log('Try to disconnect...')
-            localStorage.removeItem('token')
-
-            this.$emit('openModal', 'Menu')
-            this.$router.push('/login')
-        }
     },
 };
 

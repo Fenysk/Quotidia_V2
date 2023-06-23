@@ -14,7 +14,18 @@ export const getUsers = async () => {
 
 export const getUserById = async (id) => {
   try {
-    const user = await prisma.users.findUnique({ where: { id } });
+    // get only the fields you need
+    const user = await prisma.users.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+        openaiCost: true,
+      },
+    });
     return user;
   } catch (error) {
     console.error('Error retrieving user by ID:', error);

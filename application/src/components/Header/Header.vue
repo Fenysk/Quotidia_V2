@@ -1,12 +1,12 @@
 <template>
-    <header :class="'bg-' + header.color + '-500'"
-    class="
+    <header :class="'bg-' + header.color + '-500'" class="
     fixed top-0 left-0 z-50
     flex justify-between items-center w-full
     touch-none
     lg:hidden
     ">
-        <button @click="header.buttonLeft.action" :class="header.buttonLeft.type === 'none' ? 'invisible' : ''">{{ header.buttonLeft.title
+        <button @click="header.buttonLeft.action" :class="header.buttonLeft.type === 'none' ? 'invisible' : ''">{{
+            header.buttonLeft.title
         }}
         </button>
         <h1 class="text-2xl font-bold">{{ currentPage }}</h1>
@@ -38,7 +38,21 @@ export default {
 
     computed: {
         header() {
-            if (this.currentPage && this.currentPage === 'Dashboard') {
+            if (this.currentPage && this.currentPage === 'Account') {
+                return {
+                    buttonLeft: {
+                        title: 'Menu',
+                        type: 'menu',
+                        action: () => this.openModal('Menu')
+                    },
+                    buttonRight: {
+                        title: 'None',
+                        type: 'none',
+                        action: () => console.log('None')
+                    },
+                    color: 'green'
+                }
+            } else if (this.currentPage && this.currentPage === 'Dashboard') {
                 return {
                     buttonLeft: {
                         title: 'Menu',

@@ -1,4 +1,5 @@
 import { getUsers, getUserById, updateUser, deleteUser } from './usersService.js';
+import { middlewareToken } from '../../middleware/token.js';
 
 export default function userRoutes(app) {
 
@@ -8,11 +9,19 @@ export default function userRoutes(app) {
         reply.send(users);
     });
 
-    app.get('/users/:id', async (request, reply) => {
-        console.log('GET /users/:id');
-        const user = await getUserById(Number(request.params.id));
-        reply.send(user);
-    });
+    app.get(
+
+        '/user',
+
+        { preHandler: middlewareToken },
+
+        async (request, reply) => {
+            console.log('GET /user');
+            const userId = request.userId;
+
+            const user = await getUserById(userId);
+            reply.send(user);
+        });
 
     app.patch('/users/:id', async (request, reply) => {
         console.log('PATCH /users/:id');
