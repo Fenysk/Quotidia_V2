@@ -50,17 +50,20 @@ export const getTodayNotes = async (userId) => {
         const notes = await prisma.note.findMany({
             where: {
                 userId,
-                state: null,
+                OR: [
+                    { state: null },
+                    { state: 'archived' }
+                ],
                 deadlineAt: {
                     gte: today,
                     lt: tomorrow
                 }
             },
             include: {
-                Task: true, // On inclut les tâches associées à la note
-                tags: {     // Ici, on fait référence à la table de jointure 'NoteTag'
+                Task: true,
+                tags: {
                     include: {
-                        tag: true // On inclut les tags associés à la note
+                        tag: true
                     }
                 }
             }

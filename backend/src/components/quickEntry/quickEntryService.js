@@ -36,6 +36,7 @@ export const treatEntry = async (userId, entry) => {
 
             const updatedNoteWithDeadline = addDeadlineToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithDeadline);
+            //TODO: Si aujourdhui, on ajoute à l'agenda
 
             const updatedNoteWithReminderDelay = addReminderDelayToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithReminderDelay);

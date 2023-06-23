@@ -8,7 +8,7 @@
             {{ note.text }}
         </div>
 
-        <pre>{{ note }}</pre>
+        <pre class="overflow-auto">{{ note }}</pre>
     </div>
 </template>
 
