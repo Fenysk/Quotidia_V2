@@ -7,7 +7,7 @@
         <button @click="disconnect">Disconnect</button>
 
         <p>Utilisation : {{ user.openaiCost }} $</p>
-        <p>Utilisation : {{ getEurCost(user.openaiCost) }} €</p>
+        <p>Utilisation : {{ USDtoEUR(user.openaiCost) }} €</p>
 
     </div>
 </template>
@@ -19,20 +19,14 @@ import { computed, onMounted, ref } from 'vue';
 import router from '../router/router.js';
 import { getCurrentUser } from '../services/users/users.js';
 
+import { USDtoEUR } from '../utils/currency.js';
+
 const user = ref({})
 
 onMounted(async () => {
     user.value = await getCurrentUser()
     user.value.openaiCost = user.value.openaiCost.toFixed(7)
 })
-
-const getEurCost = (cost) => {
-
-    const eurCost = cost * 0.92
-
-    return eurCost.toFixed(7)
-
-}
 
 const disconnect = () => {
     console.log('Try to disconnect...')
