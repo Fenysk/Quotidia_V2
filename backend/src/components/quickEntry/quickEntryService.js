@@ -21,32 +21,32 @@ export const treatEntry = async (userId, entry) => {
         if (functionArgs.hasTasks) {
             console.log('hasTasks');
 
-            const updatedNoteWithTasks = addTasksToNote(noteConfirmation.id, entry);
+            const updatedNoteWithTasks = addTasksToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithTasks);
         }
         if (functionArgs.hasLocation) {
             console.log('hasLocation');
 
-            const updatedNotewithLocation = addLocationToNote(noteConfirmation.id, entry);
+            const updatedNotewithLocation = addLocationToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNotewithLocation);
         }
         
         if (functionArgs.isEvent || functionArgs.isTask) {
             console.log('isEvent ou isTask');
 
-            const updatedNoteWithDeadline = addDeadlineToNote(noteConfirmation.id, entry);
+            const updatedNoteWithDeadline = addDeadlineToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithDeadline);
 
-            const updatedNoteWithReminderDelay = addReminderDelayToNote(noteConfirmation.id, entry);
+            const updatedNoteWithReminderDelay = addReminderDelayToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithReminderDelay);
 
-            const updatedNoteWithImportance = addImportanceToNote(noteConfirmation.id, entry);
+            const updatedNoteWithImportance = addImportanceToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNoteWithImportance);
 
         } else {
             console.log('isNote');
 
-            const updatedNotewithTags = addTagsToNote(noteConfirmation.id, entry);
+            const updatedNotewithTags = addTagsToNote(userId, noteConfirmation.id, entry);
             console.log('Note à jour :', updatedNotewithTags);
         }
 

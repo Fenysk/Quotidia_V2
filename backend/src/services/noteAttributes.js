@@ -3,8 +3,8 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const addDeadlineToNote = async (noteId, entry) => {
-    const response = await askAttributeToOpenai(noteId, 'deadline', entry);
+export const addDeadlineToNote = async (userId, noteId, entry) => {
+    const response = await askAttributeToOpenai(userId, noteId, 'deadline', entry);
 
     // Transformer en date
     const functionCall = response.data.choices[0].message.function_call;
@@ -30,8 +30,8 @@ export const addDeadlineToNote = async (noteId, entry) => {
     return updatedNoteWithDeadline;
 };
 
-export const addReminderDelayToNote = async (noteId, entry) => {
-    const response = await askAttributeToOpenai(noteId, 'reminderDelay', entry);
+export const addReminderDelayToNote = async (userId, noteId, entry) => {
+    const response = await askAttributeToOpenai(userId, noteId, 'reminderDelay', entry);
 
     const functionCall = response.data.choices[0].message.function_call;
     const argumentsObject = JSON.parse(functionCall.arguments);
@@ -52,8 +52,8 @@ export const addReminderDelayToNote = async (noteId, entry) => {
     return updatedNoteWithReminderDelay;
 };
 
-export const addTasksToNote = async (noteId, entry) => {
-    const response = await askAttributeToOpenai(noteId, 'tasks', entry);
+export const addTasksToNote = async (userId, noteId, entry) => {
+    const response = await askAttributeToOpenai(userId, noteId, 'tasks', entry);
 
     const functionCall = response.data.choices[0].message.function_call;
     console.log('Function :', functionCall);
@@ -82,11 +82,11 @@ export const addTasksToNote = async (noteId, entry) => {
     return tasks;
 };
 
-export const addTagsToNote = async (noteId, entry) => {
+export const addTagsToNote = async (userId, noteId, entry) => {
 
     while (true) {
         try {
-            const response = await askAttributeToOpenai(noteId, 'tags', entry);
+            const response = await askAttributeToOpenai(userId, noteId, 'tags', entry);
             const functionCall = response.data.choices[0].message.function_call;
             console.log('Function :', functionCall);
             const argumentsObject = JSON.parse(functionCall.arguments);
@@ -121,8 +121,8 @@ export const addTagsToNote = async (noteId, entry) => {
 
 };
 
-export const addLocationToNote = async (noteId, entry) => {
-    const response = await askAttributeToOpenai(noteId, 'location', entry);
+export const addLocationToNote = async (userId, noteId, entry) => {
+    const response = await askAttributeToOpenai(userId, noteId, 'location', entry);
 
     const functionCall = response.data.choices[0].message.function_call;
     const argumentsObject = JSON.parse(functionCall.arguments);
@@ -143,8 +143,8 @@ export const addLocationToNote = async (noteId, entry) => {
     return updatedNoteWithLocation;
 };
 
-export const addImportanceToNote = async (noteId, entry) => {
-    const response = await askAttributeToOpenai(noteId, 'importance', entry);
+export const addImportanceToNote = async (userId, noteId, entry) => {
+    const response = await askAttributeToOpenai(userId, noteId, 'importance', entry);
 
     const functionCall = response.data.choices[0].message.function_call;
     const argumentsObject = JSON.parse(functionCall.arguments);
