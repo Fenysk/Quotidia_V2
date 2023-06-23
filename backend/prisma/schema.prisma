@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Users {
-  id               Int       @id @default(autoincrement())
-  username         String?   @unique(map: "username") @db.VarChar(255)
-  email            String?   @db.VarChar(255)
-  password         String?   @db.VarChar(255)
-  createdAt        DateTime? @default(now()) @db.DateTime(0)
-  updatedAt        DateTime? @default(now()) @updatedAt @db.DateTime(0)
-  openaiTokenUsage Int?      @default(0)
-  notes            Note[]
-  Tag              Tag[]
+  id         Int       @id @default(autoincrement())
+  username   String?   @unique(map: "username") @db.VarChar(255)
+  email      String?   @db.VarChar(255)
+  password   String?   @db.VarChar(255)
+  createdAt  DateTime? @default(now()) @db.DateTime(0)
+  updatedAt  DateTime? @default(now()) @updatedAt @db.DateTime(0)
+  openaiCost Float?    @db.Float
+  notes      Note[]
+  Tag        Tag[]
 }
 
 model Tag {

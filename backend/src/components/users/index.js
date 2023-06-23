@@ -1,4 +1,4 @@
-import { getUsers, getUserById, updateUser, deleteUser, updateUserOpenaiTokenUsage } from './usersService.js';
+import { getUsers, getUserById, updateUser, deleteUser, updateUserOpenaiCost } from './usersService.js';
 import userRoutes from './usersRoutes.js';
 
-export { getUsers, getUserById, updateUser, deleteUser, updateUserOpenaiTokenUsage, userRoutes };
+export { getUsers, getUserById, updateUser, deleteUser, updateUserOpenaiCost, userRoutes };

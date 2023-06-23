@@ -45,19 +45,22 @@ export const deleteUser = async (id) => {
 
 
 // Permet de mettre à jour le nombre de tokens utilisés par l'utilisateur
-export const updateUserOpenaiTokenUsage = async (id, openaiTokenUsage) => {
+export const updateUserOpenaiCost = async (id, openaiCost) => {
   try {
     const user = await prisma.users.update({
       where: { id },
       data: {
-        openaiTokenUsage: {
-          increment: openaiTokenUsage, // On incrémente le nombre de tokens utilisés
+        openaiCost: {
+          increment: openaiCost, // On incrémente le nombre de tokens utilisés
         },
       },
     });
-    return user.openaiTokenUsage;
+
+    console.log('User openaiCost updated:', user.openaiCost);
+
+    return user.openaiCost;
   } catch (error) {
-    console.error('Error updating user openaiTokenUsage:', error);
-    throw new Error('Failed to update user openaiTokenUsage');
+    console.error('Error updating user openaiCost:', error);
+    throw new Error('Failed to update user openaiCost');
   }
 }

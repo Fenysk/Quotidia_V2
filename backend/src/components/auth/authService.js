@@ -13,6 +13,7 @@ export const registerUser = async (username, email, password) => {
         username,
         email,
         password: hashedPassword,
+        openaiCost: 0,
       },
     });
 

@@ -1,5 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
-import { updateUserOpenaiTokenUsage } from "../users/usersService.js";
+import { updateUserOpenaiCost } from "../users/usersService.js";
+import { middlewareUseTokenOpenai } from "../../middleware/openai.js";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,34 +8,77 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+
+export const getResponseFromOpenai = async (
+  userId,
+  model = 'gpt-3.5-turbo-0613',
+  messages,
+  functions = null,
+  function_call = null,
+  temperature = null
+) => {
+  console.log('model:', model);
+  console.log('messages:', messages);
+  console.log('functions:', functions);
+  console.log('function_call:', function_call);
+  console.log('temperature:', temperature);
+
+  const params = {
+    model: model,
+    messages: messages,
+  };
+  
+  if (functions) {
+    params.functions = functions;
+  }
+  if (function_call) {
+    params.function_call = function_call;
+  }
+  if (temperature) {
+    params.temperature = temperature;
+  }
+
+  try {
+    const response = await openai.createChatCompletion(params);
+
+    console.log('Réponse d\'OpenAI reçue :\n\n', response.data.choices[0].message);
+
+    middlewareUseTokenOpenai(userId, response);
+
+    return response;
+  } catch (error) {
+    console.error('\n\nError calling OpenAI:\n\n', error.message);
+    throw new Error('Failed to call OpenAI API :\n\n', error.message);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// FONCTIONS UTILISÉES POUR TOUTE L'APPLICATION
+
 let model = 'gpt-3.5-turbo-0613';
 
 export const openaiChat = async (userId, message) => {
   try {
-    const response = await openai.createChatCompletion({
-      model: model,
-      messages: [
-        { role: "system", content: "Say exactly 'OK'" },
-        { role: "user", content: message }
-      ],
-    });
+    const messages = [
+      { role: "system", content: "Say exactly 'OK'" },
+      { role: "user", content: message }
+    ];
 
-    let finalResponse = {};
+    const response = await getResponseFromOpenai(userId, model, messages);
 
-    finalResponse.tokenCurrentUsed = response.data.usage.total_tokens;
-    finalResponse.message = response.data.choices[0].message.content;
-    finalResponse.tokenTotalUsed = await updateUserOpenaiTokenUsage(userId, finalResponse.tokenCurrentUsed);
-
-    // Vérification du modèle et calcul du coût en fiat
-    finalResponse.model = response.data.model;
-    if (finalResponse.model.includes('gpt-3')) {
-      finalResponse.fiatTotalSpent = finalResponse.tokenTotalUsed * 0.0000015;
-    }
-    else if (finalResponse.model.includes('gpt-4')) {
-      finalResponse.fiatTotalSpent = finalResponse.tokenTotalUsed * 0.00003;
-    }
-
-    return finalResponse;
+    return response.data.choices[0].message;
 
   } catch (error) {
     console.error('Error calling OpenAI API:', error);
