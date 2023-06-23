@@ -1,4 +1,4 @@
-import { getNotes, getNoteById, updateNote, deleteNote } from './notesService.js';
+import { getNotes, getNoteById, updateNote, deleteNote, getTodayNotes } from './notesService.js';
 import { middlewareToken } from '../../middleware/token.js';
 
 export default function notesRoutes(app) {
@@ -15,6 +15,23 @@ export default function notesRoutes(app) {
 
             console.log('GET /notes');
             const notes = await getNotes(userId);
+
+            reply.send(notes);
+        });
+
+
+    app.get(
+
+        '/notes/today', // Route
+
+        { preHandler: middlewareToken }, // Middleware
+
+        async (request, reply) => { // Handler
+
+            const userId = request.userId;
+
+            console.log('GET /notes/today');
+            const notes = await getTodayNotes(userId);
 
             reply.send(notes);
         });

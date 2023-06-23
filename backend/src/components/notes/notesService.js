@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export const getNotes = async (userId) => {
     try {
-        
+
         const notes = await prisma.note.findMany({
             where: {
                 userId,
@@ -19,8 +19,8 @@ export const getNotes = async (userId) => {
                 }
             }
         });
-        
-        const notesRenamed = notes.map(note => { 
+
+        const notesRenamed = notes.map(note => {
             return {
                 ...note,
                 tasks: note.Task,
@@ -35,6 +35,51 @@ export const getNotes = async (userId) => {
     } catch (error) {
         console.error('Error retrieving notes:', error);
         throw new Error('Failed to retrieve notes');
+    }
+};
+
+export const getTodayNotes = async (userId) => {
+    try {
+        const today = new Date(); // Current date and time
+        today.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); // Set to the next day
+        tomorrow.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+        const notes = await prisma.note.findMany({
+            where: {
+                userId,
+                state: null,
+                deadlineAt: {
+                    gte: today,
+                    lt: tomorrow
+                }
+            },
+            include: {
+                Task: true, // On inclut les tâches associées à la note
+                tags: {     // Ici, on fait référence à la table de jointure 'NoteTag'
+                    include: {
+                        tag: true // On inclut les tags associés à la note
+                    }
+                }
+            }
+        });
+
+        const notesRenamed = notes.map(note => {
+            return {
+                ...note,
+                tasks: note.Task,
+                Task: undefined,
+                tags: note.tags.map(noteTag => noteTag.tag), // On utilise 'noteTag.tag' car on passe par la relation 'NoteTag'
+            };
+        });
+
+        console.log('notes:', notesRenamed);
+        return notesRenamed;
+    } catch (error) {
+        console.error('Error retrieving today notes:', error);
+        throw new Error('Failed to retrieve today notes');
     }
 };
 

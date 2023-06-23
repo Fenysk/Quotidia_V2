@@ -7,7 +7,7 @@
         <h1>Dashboard</h1>
 
         <h2>Voici le planning du jour</h2>
-        
+
         <h3>Matin</h3>
         <ul>
             <li>Tâche 1</li>
@@ -25,7 +25,11 @@
         <blockquote>
             <p>“L'intelligence, c'est la capacité de s'adapter au changement.”</p>
             <cite>Stephen Hawking</cite>
-        </blockquote>        
+        </blockquote>
+
+        <pre class="mt-16">
+            {{ notes }}
+        </pre>
 
     </div>
 </template>
@@ -33,21 +37,35 @@
 
 
 <script>
+import { getTodayNotes } from '../services/notes/notes';
 
-</script>
+export default {
+    name: 'DashboardView',
 
+    data() {
+        return {
+            notes: []
+        }
+    },
 
+    async mounted() {
+        await this.getTodayNotes()
+    },
 
-<style lang="scss" scoped>
+    methods: {
+        async getTodayNotes() {
+            this.notes = await getTodayNotes()
+        }
+    }
+}
 
-</style>
-
-
-
-<script>
 tailwind.config = {
     corePlugins: {
         preflight: true
     }
 }
 </script>
+
+
+
+<style lang="scss" scoped></style>

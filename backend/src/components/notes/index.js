@@ -1,4 +1,4 @@
-import { getNotes, getNoteById, updateNote, deleteNote } from './notesService.js';
+import { getNotes, getTodayNotes, getNoteById, updateNote, deleteNote } from './notesService.js';
 import notesRoutes from './notesRoutes.js';
 
-export { getNotes, getNoteById, updateNote, deleteNote, notesRoutes };
+export { getNotes, getTodayNotes, getNoteById, updateNote, deleteNote, notesRoutes };

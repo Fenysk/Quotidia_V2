@@ -23,6 +23,26 @@ export const getNotes = async () => {
     }
 };
 
+export const getTodayNotes = async () => {
+    try {
+        console.log('Try to get today notes');
+        const response = await axios.get(
+            `${API_URL}/notes/today`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Today notes retrieved :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration failed:', error);
+        throw new Error('Registration failed');
+    }
+};
+
 export const getNoteById = async (noteId) => {
     try {
         console.log('Try to get note');
