@@ -32,7 +32,7 @@
 
 
 
-<script setup>
+<script>
 
 </script>
 

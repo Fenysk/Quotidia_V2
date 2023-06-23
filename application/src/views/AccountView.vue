@@ -3,7 +3,6 @@
             w-screen
     ">
 
-        <h1>Dashboard</h1>
         <button @click="disconnect">Disconnect</button>
 
         <p>Utilisation : {{ user.openaiCost }} $</p>
@@ -15,7 +14,7 @@
 
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import router from '../router/router.js';
 import { getCurrentUser } from '../services/users/users.js';
 

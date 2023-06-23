@@ -28,19 +28,26 @@
     </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
 import { saveEntryToLocalStorage, treatEntry } from '../services/quickEntry/quickEntry.js';
 
-const quickEntryInput = ref('')
-const quickEntries = ref([]);
+export default {
+    name: 'QuickEntry',
 
-const submitEntry = async () => {
+    data() {
+        return {
+            quickEntryInput: '',
+            quickEntries: []
+        }
+    },
 
-    saveEntryToLocalStorage(quickEntryInput.value); // On sauvegarde l'entrée dans le local storage
-    treatEntry(quickEntryInput.value); // On traite les entrées
-    quickEntryInput.value = '';
-
+    methods: {
+        submitEntry() {
+            saveEntryToLocalStorage(this.quickEntryInput); // On sauvegarde l'entrée dans le local storage
+            treatEntry(this.quickEntryInput); // On traite les entrées
+            this.quickEntryInput = '';
+        }
+    }
 }
 </script>
 

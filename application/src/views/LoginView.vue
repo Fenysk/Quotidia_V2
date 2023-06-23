@@ -11,21 +11,29 @@
     </div>
 </template>
 
-<script setup>
-import router from '../router/router.js'
+<script>
 import { loginUser } from '../services/auth/auth'
-import { ref } from 'vue'
 
-const username = ref('')
-const password = ref('')
+export default {
+    name: 'LoginView',
 
-const login = async () => {
-    try {
-        console.log('Try to login...')
-        await loginUser(username.value, password.value)
-        router.push('/')
-    } catch (error) {
-        console.error('Login failed:', error)
-    }
+    data() {
+        return {
+            username: '',
+            password: '',
+        }
+    },
+
+    methods: {
+        async login() {
+            try {
+                console.log('Try to login...')
+                await loginUser(this.username, this.password)
+                this.$router.push('/')
+            } catch (error) {
+                console.error('Login failed:', error)
+            }
+        },
+    },
 }
 </script>

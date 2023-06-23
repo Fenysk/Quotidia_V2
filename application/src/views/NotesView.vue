@@ -15,20 +15,32 @@
     </div>
 </template>
 
-<script setup>
-import NoteMiniature from '../components/Notes/NoteMiniature.vue'
-
-import { onMounted, ref } from 'vue'
+<script>
 import { getNotes } from '../services/notes/notes'
 
-const notes = ref([])
+import NoteMiniature from '../components/Notes/NoteMiniature.vue'
 
-const updateNotes = async () => {
-    notes.value = await getNotes()
+export default {
+    name: 'NotesView',
+
+    components: {
+        NoteMiniature
+    },
+
+    data() {
+        return {
+            notes: []
+        }
+    },
+
+    async mounted() {
+        await this.updateNotes()
+    },
+
+    methods: {
+        async updateNotes() {
+            this.notes = await getNotes()
+        }
+    }
 }
-
-onMounted(async () => {
-    await updateNotes()
-})
-
 </script>

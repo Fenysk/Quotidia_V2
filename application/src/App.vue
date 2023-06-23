@@ -4,10 +4,7 @@
   <HeaderMenu v-if="modalMenuShow" @openModal="openModal" />
 
 
-  <router-view
-  v-show="!modalMenuShow"
-  v-slot="{ Component }"
-  class="
+  <router-view v-show="!modalMenuShow" v-slot="{ Component }" class="
       absolute top-16 left-0 h-[calc(100vh-4rem)] w-full touch-none
       lg:static lg:h-screen
   ">
@@ -17,7 +14,6 @@
   </router-view>
 
   <QuickEntry />
-
 </template>
 
 <script>
@@ -32,7 +28,7 @@ export default {
     Header,
     HeaderMenu,
     QuickEntry
-},
+  },
 
   data() {
     return {

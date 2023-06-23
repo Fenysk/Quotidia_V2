@@ -12,22 +12,32 @@
     </div>
 </template>
   
-<script setup>
+
+<script>
 import router from '../router/router.js';
 import { registerUser } from '../services/auth/auth';
-import { ref } from 'vue';
 
-const username = ref('');
-const email = ref('');
-const password = ref('');
+export default {
+    name: 'RegisterView',
 
-const register = async () => {
-    try {
-        console.log('Try to register...');
-        await registerUser(username.value, email.value, password.value);
-        router.push('/');
-    } catch (error) {
-        console.error('Registration failed:', error);
-    }
+    data() {
+        return {
+            username: '',
+            email: '',
+            password: '',
+        };
+    },
+
+    methods: {
+        async register() {
+            try {
+                console.log('Try to register...');
+                await registerUser(this.username, this.email, this.password);
+                router.push('/');
+            } catch (error) {
+                console.error('Registration failed:', error);
+            }
+        },
+    },
 };
 </script>
