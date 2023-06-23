@@ -16,7 +16,7 @@
                     py-2 px-[10%]
                     w-full
                 ">
-                    <router-link @click="openModal('Menu')" to="/dashboard">Dashboard</router-link>
+                    <router-link @click="openModal('Menu')" to="/today">Today</router-link>
                 </li>
 
                 <li class="

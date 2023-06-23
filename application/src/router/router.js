@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import AccountView from '../views/AccountView.vue'
-import DashboardView from '../views/DashboardView.vue'
+import TodayView from '../views/TodayView.vue'
 import ErrorView from '../views/ErrorView.vue'
 import TestView from '../views/TestView.vue'
 import NotesView from '../views/NotesView.vue'
@@ -14,7 +14,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        redirect: '/dashboard',
+        redirect: '/today',
         meta: {
             title: 'Home'
         }
@@ -48,11 +48,11 @@ const routes = [
     },
 
     {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: DashboardView,
+        path: '/today',
+        name: 'today',
+        component: TodayView,
         meta: {
-            title: 'Dashboard',
+            title: 'Today',
             requiresAuth: true
         }
     },

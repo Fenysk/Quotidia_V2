@@ -1,19 +1,23 @@
 <template>
-  <Header @openModal="openModal" />
-
-  <HeaderMenu v-if="modalMenuShow" @openModal="openModal" />
-
-
-  <router-view v-show="!modalMenuShow" v-slot="{ Component }" class="
-      absolute top-16 left-0 h-[calc(100vh-4rem)] w-full touch-none
-      lg:static lg:h-screen
+  <div class="flex flex-col
+  touch-none
   ">
-    <Transition name="page-opacity" mode="out-in">
-      <component :is="Component" />
-    </Transition>
-  </router-view>
+    <Header @openModal="openModal" />
 
-  <QuickEntry />
+    <HeaderMenu v-if="modalMenuShow" @openModal="openModal" />
+
+
+    <router-view v-show="!modalMenuShow" v-slot="{ Component }" class="
+      w-full
+      lg:static
+  ">
+      <Transition name="page-opacity" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </router-view>
+
+    <QuickEntry />
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,5 @@
 <template>
     <header :class="'bg-' + header.color + '-500'" class="
-    fixed top-0 left-0 z-50
     flex justify-between items-center w-full
     touch-none
     lg:hidden
@@ -52,7 +51,7 @@ export default {
                     },
                     color: 'green'
                 }
-            } else if (this.currentPage && this.currentPage === 'Dashboard') {
+            } else if (this.currentPage && this.currentPage === 'Today') {
                 return {
                     buttonLeft: {
                         title: 'Menu',

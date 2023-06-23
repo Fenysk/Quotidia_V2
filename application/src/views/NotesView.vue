@@ -4,7 +4,6 @@
         p-2 mt-4
         flex flex-wrap gap-4
         items-center justify-center
-        overflow-y-auto
         ">
             <li v-for="note in notes" :key="note.id">
                 <NoteMiniature :note="note" />

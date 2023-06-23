@@ -1,7 +1,7 @@
 <template>
     <div class="quickEntry
-    fixed bottom-0 right-0
-    min-h-16 w-screen
+    fixed bottom-0 left-0
+    w-screen
     bg-gray-800
     m-0 p-0
     flex flex-row items-center justify-between
@@ -55,6 +55,6 @@ export default {
 @import '../assets/scss/variables.scss';
 
 .quickEntry {
-    min-height: $headerHeight;
+    height: $headerHeight;
 }
 </style>
