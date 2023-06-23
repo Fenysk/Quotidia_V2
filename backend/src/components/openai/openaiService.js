@@ -87,6 +87,7 @@ export const getFunctions = async (userId, message) => {
         4. A note can never be both an event and a task simultaneously.
         5. If a note contains tasks, itself never is a task.
         6. If a note is event, it can contains tasks.
+        7. The title and text should be returned in the same language as the user's note.
 
         VERY IMPORTANT : You should respect all these rules.",
         "currentDate": "${currentDate.toISOString()}",
@@ -139,11 +140,13 @@ export const getFunctions = async (userId, message) => {
 
   const function_call = { "name": "createNote" };
 
+  const model = 'gpt-4-0613';
+
   console.log('messages:', messages);
   console.log('functions:', functions);
 
   try {
-    const response = await getResponseFromOpenai(userId, 'gpt-4-0613', messages, functions, function_call, null);
+    const response = await getResponseFromOpenai(userId, model, messages, functions, function_call, null);
 
     console.log('Réponse d\'OpenAI reçue :\n\n', response.data.choices[0].message);
     return response.data;
