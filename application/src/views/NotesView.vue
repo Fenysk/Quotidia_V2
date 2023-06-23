@@ -1,5 +1,5 @@
 <template>
-    <div id="notes">
+    <div id="notes" class="overflow-y-scroll">
         <ul class="
         p-2 mt-4
         flex flex-wrap gap-4
@@ -9,8 +9,6 @@
                 <NoteMiniature :note="note" />
             </li>
         </ul>
-
-        <p class="mt-16 pb-32">{{ notes[9] }}</p>
     </div>
 </template>
 
@@ -43,3 +41,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '../assets/scss/variables.scss';
+
+#notes {
+    height: calc(100vh - #{$headerHeight} - #{$footerHeight});
+}
+</style>

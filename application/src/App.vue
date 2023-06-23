@@ -1,7 +1,5 @@
 <template>
-  <div class="flex flex-col
-  touch-none
-  ">
+  <div class="flex flex-col">
     <Header @openModal="openModal" />
 
     <HeaderMenu v-if="modalMenuShow" @openModal="openModal" />
