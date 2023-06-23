@@ -81,7 +81,7 @@ export default {
     border: 1px solid rgba(156, 156, 156, 0.085);
 
     &:hover {
-        box-shadow: 2px 6px 6px rgba(0, 0, 0, 0.2);
+        box-shadow: 3px 8px 6px rgba(0, 0, 0, 0.2);
         transform-origin: top center;
         transform: perspective(1000px) rotateX(5deg);
     }
