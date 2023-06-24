@@ -11,8 +11,9 @@
 </template>
   
 <script>
-import { getNotes, searchNotes } from '../services/notes/notes'
+import { getNotes } from '../services/notes/notes'
 import NoteMiniature from '../components/Notes/NoteMiniature.vue'
+import { filteredNotes } from '../utils/filter'
 
 export default {
     name: 'NotesView',
@@ -22,7 +23,10 @@ export default {
     },
 
     props: {
-        searchQuery: String
+        searchQuery: String,
+        sortQuery: String,
+        containQuery: Array,
+        tagsQuery: Array
     },
 
     data() {
@@ -34,7 +38,16 @@ export default {
     watch: {
         async searchQuery() {
             await this.searchNotes()
-        }
+        },
+        async sortQuery() {
+            await this.searchNotes()
+        },
+        async containQuery() {
+            await this.searchNotes()
+        },
+        async tagsQuery() {
+            await this.searchNotes()
+        },
     },
 
 
@@ -44,7 +57,7 @@ export default {
 
     methods: {
         async updateNotes() {
-            
+
             try {
                 const notes = localStorage.getItem('notes')
                 this.notes = JSON.parse(notes)
@@ -56,9 +69,17 @@ export default {
             this.notes = await getNotes()
         },
 
-        async searchNotes() {
-            this.notes = await searchNotes(this.searchQuery)            
-        },
+        searchNotes() {
+            const notes = JSON.parse(localStorage.getItem('notes'))
+
+            this.notes = filteredNotes(
+                notes,
+                this.searchQuery,
+                this.sortQuery,
+                this.containQuery,
+                this.tagsQuery
+            )
+        }
     }
 }
 </script>

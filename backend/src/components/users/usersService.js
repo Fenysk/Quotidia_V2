@@ -24,14 +24,30 @@ export const getUserById = async (id) => {
         createdAt: true,
         updatedAt: true,
         openaiCost: true,
+        Tag: { // Include the associated tags
+          select: {
+            id: true,
+            label: true,
+            color: true,
+          },
+        },
       },
     });
-    return user;
+
+    const userRenamed = {
+      ...user,
+      tags: user.Tag,
+      Tag: undefined,
+    };
+
+    console.log('user:', userRenamed);
+    return userRenamed;
   } catch (error) {
     console.error('Error retrieving user by ID:', error);
     throw new Error('Failed to retrieve user by ID');
   }
 };
+
 
 export const updateUser = async (id, data) => {
   try {

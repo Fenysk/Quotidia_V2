@@ -1,6 +1,6 @@
 <template>
   <!-- Mobile -->
-  <div class="mobile flex flex-col lg:hidden">
+  <div class="mobile flex flex-col lg:hidden" v-if="screenType === 'mobile'">
     <Header @openModal="openModal" />
 
     <HeaderMenu v-if="modalMenuShow" @openModal="openModal" />
@@ -15,7 +15,7 @@
   </div>
 
   <!-- Desktop -->
-  <div class="desktop hidden lg:flex flex-col">
+  <div class="desktop hidden lg:flex flex-col" v-else>
     <div
       class="
       screen flex flex-row gap-8 2xl:gap-16
@@ -27,11 +27,32 @@
         <LeftBar />
       </div>
 
-      <div class="middle_bar h-full w-4/6">
+      <div class="middle_bar h-full"
+      :class="[
+        path.meta.title === 'Today' ? 'w-4/6' : '',
+        path.meta.title === 'Account' ? 'w-full' : '',
+        path.meta.title === 'Notes' ? 'w-4/6' : '',
+        path.meta.title === 'Note' ? 'w-4/6' : '',
+        path.meta.title === 'Calendar' ? 'w-full' : '',
+        path.meta.title === 'Journal' ? 'w-full' : '',
+        path.meta.title === '404' ? 'w-full' : '',
+      ]"
+      >
         <MiddleBar :path="path" />
       </div>
 
-      <div class="right_bar h-full w-2/6">
+      <div class="right_bar h-full
+      transition-all duration-500"
+      :class="[
+        path.meta.title === 'Today' ? 'w-2/6' : '',
+        path.meta.title === 'Account' ? 'w-0' : '',
+        path.meta.title === 'Notes' ? 'w-2/6' : '',
+        path.meta.title === 'Note' ? 'w-2/6' : '',
+        path.meta.title === 'Calendar' ? 'w-0' : '',
+        path.meta.title === 'Journal' ? 'w-0' : '',
+        path.meta.title === '404' ? 'w-0' : '',
+      ]"
+      >
         <RightBar :path="path" />
       </div>
     </div>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../../config/config';
+import { filteredNotes } from '../../utils/filter';
 
 const API_URL = config.mode === 'development' ? config.API_URL_DEV : config.API_URL_PROD;
 
@@ -15,30 +16,12 @@ export const getNotes = async () => {
             }
         );
 
-        localStorage.setItem('notes', JSON.stringify(response.data));
+        const notes = filteredNotes(response.data, '', 'recent', [], []);
 
-        console.log('Notes retrieved :\n', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
-    }
-};
+        localStorage.setItem('notes', JSON.stringify(notes));
 
-export const searchNotes = async (search) => {
-    try {
-        console.log('Try to search notes :', search);
-        const response = await axios.get(
-            `${API_URL}/notes/search/${search}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            }
-        );
-
-        console.log('Notes retrieved :\n', response.data);
-        return response.data;
+        console.log('Notes retrieved :\n', notes);
+        return notes;
     } catch (error) {
         console.error('Registration failed:', error);
         throw new Error('Registration failed');

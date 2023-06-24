@@ -5,13 +5,16 @@
         path.meta.title === 'Today' ? '' : 'bg-gray-100',
         path.meta.title === 'Account' ? 'bg-blue-100' : '',
         path.meta.title === 'Notes' ? 'bg-orange-100' : '',
+        path.meta.title === 'Calendar' ? 'bg-green-100' : '',
+        path.meta.title === 'Journal' ? 'bg-red-100' : '',
     ]">
         <header :class="[
-            path.meta.title === 'Today' ? 'h-0 py-0 overflow-hidden' : 'h-12',
+            path.meta.title === 'Today' ? 'h-0 py-0 overflow-hidden' : 'h-12 bg-gray-700',
             path.meta.title === 'Account' ? 'bg-blue-700' : '',
             path.meta.title === 'Notes' ? 'bg-yellow-700' : '',
             path.meta.title === 'Note' ? 'bg-yellow-700' : '',
-            path.meta.title === '404' ? 'bg-gray-700' : '',
+            path.meta.title === 'Calendar' ? 'bg-green-700' : '',
+            path.meta.title === 'Journal' ? 'bg-red-700' : '',
         ]" class="
             transition-all duration-500
             flex justify-between items-center
@@ -32,21 +35,28 @@
         overflow-hidden
         ">
 
-            <div v-if="path.meta.title !== 'Today' &&
-                path.meta.title !== 'Account' &&
-                path.meta.title !== 'Note'" class="left_bar w-1/4">
+            <NotesSidebar v-if="path.meta.title === 'Notes'" class="w-1/4"
+            @sort="updateSortQuery"
+            @contain="updateContainQuery"
+            @tags="updateTagsQuery" />
 
-            </div>
 
-
-            <div :class="[
-                path.meta.title === 'Today' ? 'w-full' : 'w-3/4',
-                path.meta.title === 'Account' ? 'w-full' : 'w-3/4',
-                path.meta.title === 'Note' ? 'w-full' : 'w-3/4',
-            ]" class="content">
+            <div class="content" :class="[
+                path.meta.title === 'Today' ? 'w-full' : '',
+                path.meta.title === 'Account' ? 'w-full' : '',
+                path.meta.title === 'Notes' ? 'w-3/4' : '',
+                path.meta.title === 'Note' ? 'w-full' : '',
+                path.meta.title === 'Calendar' ? 'w-full' : '',
+            ]">
                 <router-view v-slot="{ Component }">
                     <Transition name="page-opacity" mode="out-in">
-                        <component :is="Component" :searchQuery="searchQuery" />
+                        <component
+                        :is="Component"
+                        :searchQuery="searchQuery"
+                        :sortQuery="selectedSortQuery"
+                        :containQuery="containOptionsQuery"
+                        :tagsQuery="selectedTagsQuery"
+                        />
                     </Transition>
                 </router-view>
             </div>
@@ -58,23 +68,39 @@
 <script>
 import NotesHeader from '../Notes/NotesHeader.vue';
 import NoteHeader from '../Notes/NoteHeader.vue';
+import NotesSidebar from '../Notes/NotesSidebar.vue';
 
 export default {
     name: "MiddleBar",
-    components: { NotesHeader, NoteHeader },
-    
+    components: { NotesHeader, NoteHeader, NotesSidebar },
+
     props: {
         path: String,
     },
     data() {
         return {
-            searchQuery: ""
+            searchQuery: "",
+            selectedSortQuery: "recent",
+            containOptionsQuery: [],
+            selectedTagsQuery: [],
         };
     },
     methods: {
         updateSearchQuery(query) {
             this.searchQuery = query;
-        }
+        },
+        
+        updateSortQuery(query) {
+            this.selectedSortQuery = query;
+        },
+
+        updateContainQuery(query) {
+            this.containOptionsQuery = query;
+        },
+
+        updateTagsQuery(query) {
+            this.selectedTagsQuery = query;
+        },
     }
 };
 </script>

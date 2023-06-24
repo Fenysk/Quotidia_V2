@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import AccountView from '../views/AccountView.vue'
 import TodayView from '../views/TodayView.vue'
+import JournalView from '../views/JournalView.vue'
 import ErrorView from '../views/ErrorView.vue'
 import TestView from '../views/TestView.vue'
 import NotesView from '../views/NotesView.vue'
@@ -53,6 +54,16 @@ const routes = [
         component: TodayView,
         meta: {
             title: 'Today',
+            requiresAuth: true
+        }
+    },
+
+    {
+        path: '/journal',
+        name: 'journal',
+        component: JournalView,
+        meta: {
+            title: 'Journal',
             requiresAuth: true
         }
     },

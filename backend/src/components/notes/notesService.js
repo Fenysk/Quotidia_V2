@@ -38,46 +38,6 @@ export const getNotes = async (userId) => {
     }
 };
 
-export const searchNotes = async (userId, search) => {
-    console.log('search:', search);
-    try {
-        console.log('search:', search);
-        const notes = await prisma.note.findMany({
-            where: {
-                userId,
-                state: null, // On ne récupère que les notes qui ne sont ni supprimées ni archivées
-                OR: [
-                    { title: { contains: search } },
-                    { text: { contains: search } }
-                ]
-            },
-            include: {
-                Task: true,
-                tags: {
-                    include: {
-                        tag: true
-                    }
-                }
-            }
-        });
-
-        const notesRenamed = notes.map(note => {
-            return {
-                ...note,
-                tasks: note.Task,
-                Task: undefined,
-                tags: note.tags.map(noteTag => noteTag.tag), // On utilise 'noteTag.tag' car on passe par la relation 'NoteTag'
-            };
-        });
-
-        console.log('notes:', notesRenamed);
-        return notesRenamed;
-    } catch (error) {
-        console.error('Error searching notes:', error);
-        throw new Error('Failed to search notes');
-    }
-};
-
 export const getTodayNotes = async (userId) => {
     try {
         const today = new Date(); // Current date and time
