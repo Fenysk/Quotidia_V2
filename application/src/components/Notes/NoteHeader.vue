@@ -1,5 +1,8 @@
 <template>
-    <div class="controls flex justify-end gap-2 p-2">
+    <div class="controls flex justify-end gap-2 p-2
+    border-l-2 border-yellow-800
+
+    ">
         <button @click="archiveNote" class="flex gap-2 items-center
             bg-yellow-700 hover:bg-yellow-800
             text-white font-bold py-2 px-4 rounded-lg

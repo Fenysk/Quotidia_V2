@@ -157,13 +157,29 @@ export const getNoteById = async (noteId) => {
     }
 };
 
+export const createNote = async (userId, noteData) => {
+    try {
+        // On sépare les données de la note
+        const { title, text } = noteData;
+
+        const note = await prisma.note.create({
+            data: {
+                userId,
+                title,
+                text
+            }
+        });
+        return note;
+    } catch (error) {
+        console.error('Error creating note:', error);
+        throw new Error('Failed to create note');
+    }
+}
+
 export const createNoteFromEntry = async (userId, functionArguments) => {
     try {
         // On sépare les arguments de la fonction
         const { title, text } = functionArguments;
-
-        console.log('title:', title);
-        console.log('text:', text);
 
         const note = await prisma.note.create({
             data: {

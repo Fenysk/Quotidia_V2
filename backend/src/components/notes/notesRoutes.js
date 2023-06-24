@@ -1,4 +1,4 @@
-import { getNotes, searchNotes, getNoteById, updateNote, deleteNote, getTodayNotes } from './notesService.js';
+import { getNotes, searchNotes, getNoteById, updateNote, deleteNote, getTodayNotes, createNote } from './notesService.js';
 import { middlewareToken } from '../../middleware/token.js';
 
 export default function notesRoutes(app) {
@@ -84,7 +84,7 @@ export default function notesRoutes(app) {
             const noteData = request.body;
 
             console.log('POST /notes');
-            const note = await createnote(userId, noteData);
+            const note = await createNote(userId, noteData);
 
             reply.send(note);
         });

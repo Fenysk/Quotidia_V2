@@ -87,6 +87,30 @@ export const getNoteById = async (noteId) => {
     }
 };
 
+export const createNote = async () => {
+    try {
+        console.log('Try to create note');
+        const response = await axios.post(
+            `${API_URL}/notes`,
+            {
+                title: 'Note du ' + new Date().toLocaleDateString(),
+                text: 'Texte de la note'
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Note created :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration failed:', error);
+        throw new Error('Registration failed');
+    }
+};
+
 export const setStateNote = async (noteId, state) => {
     try {
         console.log('Try to set state note');

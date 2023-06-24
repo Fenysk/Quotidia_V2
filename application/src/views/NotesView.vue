@@ -1,6 +1,8 @@
 <template>
-    <div id="notes" class="h-full w-full">
-        <ul class="p-2 flex flex-wrap gap-4 justify-center h-full overflow-y-auto">
+    <div id="notes" class="
+    w-full h-full
+    ">
+        <ul class="p-2 flex flex-wrap gap-4 justify-center overflow-y-auto">
             <li v-for="note in notes" :key="note.id">
                 <NoteMiniature :note="note" />
             </li>
@@ -63,6 +65,10 @@ export default {
   
 <style lang="scss" scoped>
 @import '../assets/scss/variables.scss';
+
+ul {
+    max-height: 100%;
+}
 
 #notes.mobile {
     height: calc(100vh - #{$headerHeight} - #{$footerHeight});

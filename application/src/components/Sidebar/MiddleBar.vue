@@ -16,6 +16,7 @@
             transition-all duration-500
             flex justify-between items-center
             font-bold text-xl text-white
+            overflow-hidden
         ">
             <p class="px-4 py-2 w-1/4">{{ path.meta.title }}</p>
 
