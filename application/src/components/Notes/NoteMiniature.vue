@@ -9,7 +9,7 @@
             <span v-else-if="note.importance === 2"
                 class="mr-1 text-xl text-red-600 font-extrabold whitespace-nowrap">!</span>
         </header>
-        <p class="mt-2 line-clamp-3">{{ note.text }}</p>
+        <p class="mt-2 line-clamp-3 whitespace-pre-wrap">{{ markdownToText(note.text) }}</p>
         <span v-if="note.tags[0]" class="absolute bottom-1 right-1 text-xs opacity-80">{{ note.tags[0].label }}</span>
         <span v-if="deadlineDate" :class="colorDate" class="absolute bottom-1 left-1 text-xs opacity-80">Pour le {{
             deadlineDate }} à <strong>{{ deadlineHours }}</strong></span>
@@ -18,6 +18,8 @@
 </template>
   
 <script>
+import { markdownToText } from '../../utils/markdown.js'
+
 export default {
     name: 'NoteMiniature',
 
@@ -51,6 +53,10 @@ export default {
     methods: {
         goToNote(id) {
             this.$router.push('/notes/' + id);
+        },
+
+        markdownToText (markdown) {
+            return markdownToText(markdown)
         }
     }
 };
@@ -77,6 +83,7 @@ export default {
     }
 
     h2 {
+        font-size: 1.2rem;
         font-weight: bold;
     }
 }

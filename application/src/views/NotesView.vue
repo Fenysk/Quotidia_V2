@@ -1,6 +1,6 @@
 <template>
     <div id="notes" class="h-full w-full">
-        <ul class="p-2 flex flex-wrap gap-4 justify-center overflow-y-auto">
+        <ul class="p-2 flex flex-wrap gap-4 justify-center h-full overflow-y-auto">
             <li v-for="note in notes" :key="note.id">
                 <NoteMiniature :note="note" />
             </li>
@@ -42,6 +42,15 @@ export default {
 
     methods: {
         async updateNotes() {
+            
+            try {
+                const notes = localStorage.getItem('notes')
+                this.notes = JSON.parse(notes)
+
+            } catch (error) {
+                console.error(error)
+            }
+
             this.notes = await getNotes()
         },
 

@@ -20,6 +20,7 @@
             <p class="px-4 py-2 w-1/4">{{ path.meta.title }}</p>
 
             <NotesHeader v-if="path.meta.title === 'Notes'" class="w-3/4" @search="updateSearchQuery" />
+            <NoteHeader v-if="path.meta.title === 'Note'" class="w-3/4" />
 
 
 
@@ -55,10 +56,11 @@
   
 <script>
 import NotesHeader from '../Notes/NotesHeader.vue';
+import NoteHeader from '../Notes/NoteHeader.vue';
 
 export default {
     name: "MiddleBar",
-    components: { NotesHeader },
+    components: { NotesHeader, NoteHeader },
     
     props: {
         path: String,

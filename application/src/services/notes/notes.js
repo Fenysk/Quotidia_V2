@@ -15,6 +15,9 @@ export const getNotes = async () => {
             }
         );
 
+        //Save to local storage
+        localStorage.setItem('notes', JSON.stringify(response.data));
+
         console.log('Notes retrieved :\n', response.data);
         return response.data;
     } catch (error) {
@@ -99,6 +102,30 @@ export const setStateNote = async (noteId, state) => {
         );
 
         console.log('Note state set :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration failed:', error);
+        throw new Error('Registration failed');
+    }
+};
+
+export const updateNote = async (note) => {
+    try {
+        console.log('Try to update note');
+        const response = await axios.patch(
+            `${API_URL}/notes/${note.id}`,
+            {
+                title: note.title,
+                text: note.text
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Note updated :\n', response.data);
         return response.data;
     } catch (error) {
         console.error('Registration failed:', error);

@@ -3,41 +3,32 @@
     bg-yellow-200 h-full
     w-full
     ">
-        <input class="text-center font-bold mt-2 py-2 w-full bg-transparent" v-model="note.title" placeholder="Note title" />
+        <ul class="flex">
+            <!-- Tags -->
+            <li v-for="tag in note.tags" :key="tag.id" class="flex items-center gap-2 p-2">
+                <span @click="editTag(tag.id)" class="text-yellow-900 font-bold text-lg">#{{ tag.label }}</span>
+            </li>
+            <!-- TODO: Add tags -->
+        </ul>
 
-        <div class="controls flex justify-center gap-8 p-2">
-            <button
-            @click="archiveNote"
-            class="flex gap-2 items-center
-            bg-yellow-700 hover:bg-yellow-800
-            text-white font-bold py-2 px-4 rounded-lg
-            ">
-                <span>Archiver</span>
-                <i class="fas fa-archive"></i>
-            </button>
-            <button
-            @click="deleteNote"
-            class="flex gap-2 items-center
-            bg-yellow-700 hover:bg-red-800
-            text-white font-bold py-2 px-4 rounded-lg
-            ">
-                <span>Delete</span>
-                <i class="fas fa-trash"></i>
-            </button>
-        </div>
+        <input @keyup="saveNote"
+            class="text-center font-bold mt-2 py-2 w-full bg-transparent focus:outline-none focus:border-transparent"
+            v-model="note.title" placeholder="Note title" />
 
-        <textarea v-show="!isMarkdown"
-        @focusout="switchToMarkdown" class="w-full mt-4 p-2 bg-transparent" v-model="note.text"
-            placeholder="Note text"></textarea>
+        <textarea ref="noteTextarea" v-show="!isMarkdown" @keyup="saveNote" @focusout="switchToMarkdown" class="w-full h-full px-4 mt-4 p-2 bg-transparent pre-wrap
+            focus:outline-none focus:border-transparent
+            " v-model="note.text" placeholder="Note text"></textarea>
 
-        <div @click="switchToMarkdown" v-show="isMarkdown" class="w-full mt-4 p-2 bg-transparent"
+
+        <div @click="switchToMarkdown" v-show="isMarkdown" class="markdown w-full px-4 mt-4 p-2 bg-transparent"
             v-html="markdownToHtml(note.text)"></div>
+
     </div>
 </template>
   
 <script>
-import { getNoteById, setStateNote } from '../services/notes/notes'
-// import marked from 'marked';
+import { getNoteById, updateNote, setStateNote } from '../services/notes/notes'
+import { markdownToHtml } from '../utils/markdown.js'
 
 export default {
     name: 'NoteView',
@@ -45,7 +36,8 @@ export default {
     data() {
         return {
             note: {},
-            isMarkdown: false
+            isMarkdown: false,
+            updateTimeout: null  // Ajoutez cette ligne
         }
     },
 
@@ -59,11 +51,23 @@ export default {
             this.note = await getNoteById(id)
         },
         markdownToHtml(text) {
-            return text
+            return markdownToHtml(text)
         },
         switchToMarkdown() {
             this.isMarkdown = !this.isMarkdown;
+            this.$nextTick(() => {
+                if (!this.isMarkdown) {
+                    this.$refs.noteTextarea.focus();
+                }
+            });
         },
+
+
+        async editTag(tagId) {
+            // TODO: Edit tag
+        },
+
+
 
         async deleteNote() {
             await setStateNote(this.note.id, 'deleted')
@@ -73,7 +77,16 @@ export default {
         async archiveNote() {
             await setStateNote(this.note.id, 'archived')
             this.$router.push('/notes')
-        }
+        },
+        async saveNote() {
+            if (this.updateTimeout) {
+                clearTimeout(this.updateTimeout);  // Annuler le délai précédent
+            }
+            this.updateTimeout = setTimeout(async () => {
+                await updateNote(this.note);
+            }, 400);  // Définir un nouveau délai de 100ms
+        },
+
 
     }
 }
@@ -90,6 +103,51 @@ input {
 textarea {
     min-width: 100%;
     resize: none;
+}
+</style>
+
+<style lang="scss" scoped>
+.markdown {
+
+    h1 {
+        font-size: 2rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    h3 {
+        font-size: 1.6rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    h4 {
+        font-size: 1.4rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    h6 {
+        font-size: 1rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    p {
+        font-size: 1.2rem;
+        font-family: 'Architects Daughter', cursive;
+    }
+
+    li {
+        font-size: 1.3rem;
+        font-family: 'Architects Daughter', cursive;
+    }
 }
 </style>
   
