@@ -15,7 +15,6 @@ export const getNotes = async () => {
             }
         );
 
-        //Save to local storage
         localStorage.setItem('notes', JSON.stringify(response.data));
 
         console.log('Notes retrieved :\n', response.data);
@@ -57,6 +56,8 @@ export const getTodayNotes = async () => {
                 }
             }
         );
+
+        localStorage.setItem('todayNotes', JSON.stringify(response.data));
 
         console.log('Today notes retrieved :\n', response.data);
         return response.data;

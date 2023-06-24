@@ -15,6 +15,8 @@ export const getCurrentUser = async () => {
             }
         );
 
+        localStorage.setItem('user', JSON.stringify(response.data));
+
         console.log('Get user by id successful:', response.data);
         return response.data;
 

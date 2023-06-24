@@ -54,7 +54,6 @@
 <script>
 import { getTodayNotes } from '../services/notes/notes';
 import { getCurrentUser } from '../services/users/users';
-
 export default {
     name: 'TodayView',
 
@@ -62,42 +61,58 @@ export default {
         return {
             user: {},
             notes: [{}],
-            morningNotes: [],
-            afternoonNotes: []
         };
     },
 
     async mounted() {
-        await this.getTodayNotes();
-        await this.getCurrentUser();
+        this.getTodayNotes();
+        this.getCurrentUser();
     },
 
-    methods: {
-        async getCurrentUser() {
-            this.user = await getCurrentUser();
-        },
-
-        async getTodayNotes() {
-            this.notes = await getTodayNotes();
-
-            // Trier les notes par matin et après-midi via la deadline ISO
-            this.morningNotes = this.notes.filter((note) => {
+    computed: {
+        morningNotes() {
+            return this.notes.filter((note) => {
                 const deadline = new Date(note.deadlineAt);
                 const deadlineHour = deadline.getHours();
                 return deadlineHour < 12;
             });
+        },
 
-            this.afternoonNotes = this.notes.filter((note) => {
+        afternoonNotes() {
+            return this.notes.filter((note) => {
                 const deadline = new Date(note.deadlineAt);
                 const deadlineHour = deadline.getHours();
                 return deadlineHour >= 12;
             });
         },
+    },
+
+    methods: {
+        async getCurrentUser() {
+            try {
+                const user = localStorage.getItem('user');
+                this.user = JSON.parse(user);
+            } catch (error) {
+                console.error(error);
+            }
+
+            this.user = await getCurrentUser();
+        },
+
+        async getTodayNotes() {
+            try {
+                const notes = localStorage.getItem('todayNotes');
+                this.notes = JSON.parse(notes);
+            } catch (error) {
+                console.error(error);
+            }
+            this.notes = await getTodayNotes();
+        },
 
         goToNote(noteId) {
             this.$router.push(`/notes/${noteId}`);
-        }
-    }
+        },
+    },
 };
 </script>
   

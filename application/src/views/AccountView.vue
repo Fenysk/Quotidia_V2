@@ -20,9 +20,9 @@ onMounted(async () => {
     user.value.openaiCost = user.value.openaiCost.toFixed(7);
 });
 
-const disconnect = () => {
+const disconnect = async () => {
     console.log('Try to disconnect...');
-    localStorage.removeItem('token');
+    localStorage.clear();
     router.push('/login');
 };
 </script>
