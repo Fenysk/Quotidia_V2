@@ -1,6 +1,7 @@
 <template>
     <div class="quickEntry
     fixed bottom-0 left-0
+    lg:relative
     w-screen
     bg-gray-800
     m-0 p-0

@@ -11,8 +11,8 @@
         <button @click="$router.push('/login')">Je préfère me connecter</button>
     </div>
 </template>
+    
   
-
 <script>
 import router from '../router/router.js';
 import { registerUser } from '../services/auth/auth';
@@ -24,7 +24,7 @@ export default {
         return {
             username: '',
             email: '',
-            password: '',
+            password: ''
         };
     },
 
@@ -37,7 +37,8 @@ export default {
             } catch (error) {
                 console.error('Registration failed:', error);
             }
-        },
+        }
     },
 };
 </script>
+  

@@ -23,6 +23,26 @@ export const getNotes = async () => {
     }
 };
 
+export const searchNotes = async (search) => {
+    try {
+        console.log('Try to search notes :', search);
+        const response = await axios.get(
+            `${API_URL}/notes/search/${search}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Notes retrieved :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Registration failed:', error);
+        throw new Error('Registration failed');
+    }
+};
+
 export const getTodayNotes = async () => {
     try {
         console.log('Try to get today notes');

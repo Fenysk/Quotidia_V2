@@ -10,7 +10,7 @@
         <button @click="$router.push('/register')">Je préfère m'inscrire</button>
     </div>
 </template>
-
+  
 <script>
 import { loginUser } from '../services/auth/auth'
 
@@ -20,7 +20,7 @@ export default {
     data() {
         return {
             username: '',
-            password: '',
+            password: ''
         }
     },
 
@@ -33,7 +33,8 @@ export default {
             } catch (error) {
                 console.error('Login failed:', error)
             }
-        },
-    },
+        }
+    }
 }
 </script>
+  

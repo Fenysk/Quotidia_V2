@@ -1,20 +1,15 @@
 <template>
-    <div id="notes" class="overflow-y-scroll">
-        <ul class="
-        p-2 mt-4
-        flex flex-wrap gap-4
-        items-center justify-center
-        ">
+    <div id="notes" class="h-full w-full">
+        <ul class="p-2 flex flex-wrap gap-4 justify-center overflow-y-auto">
             <li v-for="note in notes" :key="note.id">
                 <NoteMiniature :note="note" />
             </li>
         </ul>
     </div>
 </template>
-
+  
 <script>
-import { getNotes } from '../services/notes/notes'
-
+import { getNotes, searchNotes } from '../services/notes/notes'
 import NoteMiniature from '../components/Notes/NoteMiniature.vue'
 
 export default {
@@ -24,11 +19,22 @@ export default {
         NoteMiniature
     },
 
+    props: {
+        searchQuery: String
+    },
+
     data() {
         return {
-            notes: []
+            notes: [],
         }
     },
+
+    watch: {
+        async searchQuery() {
+            await this.searchNotes()
+        }
+    },
+
 
     async mounted() {
         await this.updateNotes()
@@ -37,15 +43,19 @@ export default {
     methods: {
         async updateNotes() {
             this.notes = await getNotes()
+        },
+
+        async searchNotes() {
+            this.notes = await searchNotes(this.searchQuery)            
         }
     }
 }
 </script>
-
+  
 <style lang="scss" scoped>
 @import '../assets/scss/variables.scss';
 
-#notes {
+#notes.mobile {
     height: calc(100vh - #{$headerHeight} - #{$footerHeight});
 }
 </style>
