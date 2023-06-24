@@ -56,7 +56,7 @@ export default {
 
         async searchNotes() {
             this.notes = await searchNotes(this.searchQuery)            
-        }
+        },
     }
 }
 </script>

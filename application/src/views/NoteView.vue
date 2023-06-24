@@ -4,7 +4,6 @@
     w-full
     ">
         <ul class="flex">
-            <!-- Tags -->
             <li v-for="tag in note.tags" :key="tag.id" class="flex items-center gap-2 p-2">
                 <span @click="editTag(tag.id)" class="text-yellow-900 font-bold text-lg">#{{ tag.label }}</span>
             </li>
@@ -47,12 +46,26 @@ export default {
 
     methods: {
         async updateNote() {
-            const id = this.$route.params.id
+            const id = parseInt(this.$route.params.id)
+
+            try {
+                
+                let notes = localStorage.getItem('notes')
+                notes = JSON.parse(notes)
+                const note = notes.find(note => note.id === id)
+                this.note = note
+
+            } catch (error) {
+                console.error(error)
+            }
+
             this.note = await getNoteById(id)
         },
+
         markdownToHtml(text) {
             return markdownToHtml(text)
         },
+        
         switchToMarkdown() {
             this.isMarkdown = !this.isMarkdown;
             this.$nextTick(() => {
