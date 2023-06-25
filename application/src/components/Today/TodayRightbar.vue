@@ -1,12 +1,14 @@
 <template>
     <div class="
     ">
-        <p>Test</p>
+        <JournalView />
     </div>
 </template>
 
 <script>
+import JournalView from '../../views/JournalView.vue';
 export default {
-    name: 'TodayRightbar',
+    name: "TodayRightbar",
+    components: { JournalView }
 }
 </script>

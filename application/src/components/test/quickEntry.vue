@@ -15,32 +15,42 @@
     </div>
 </template>
 
-<script setup>
-import { onMounted, ref } from 'vue';
-import { getEntriesFromLocalStorage, saveEntryToLocalStorage, treatEntries, treatEntry } from '../../services/quickEntry/quickEntry.js';
+<script>
+import { saveEntryToLocalStorage, getEntriesFromLocalStorage, treatEntry, treatEntries } from '../../services/quickEntry/quickEntry'
+export default {
+    name: 'QuickEntry',
 
-const userInput = ref('');
-const entries = ref([]);
+    data() {
+        return {
+            userInput: '',
+            entries: []
+        }
+    },
 
-const submitEntry = async () => {
+    methods: {
+        submitEntry() {
 
-    saveEntryToLocalStorage(userInput.value); // On sauvegarde l'entrée dans le local storage
-    
-    treatEntry(userInput.value); // On traite les entrées
+            // Si l'entrée n'est pas vide
+            if (this.userInput !== '') {
 
-    userInput.value = '';
+                saveEntryToLocalStorage(this.userInput); // On sauvegarde l'entrée dans le local storage
 
+                treatEntry(this.userInput); // On traite les entrées
+
+                this.userInput = '';
+            }
+
+        }
+    },
+
+    mounted() {
+        // this.entries = getEntriesFromLocalStorage(); // On récupère les entrées du local storage
+
+        //TODO: Vérifier si les entrées n'ont pas déjà été traitées avant de les traiter
+
+        if (this.entries.length > 0) {
+            treatEntries(); // alors on les traite
+        }
+    },
 }
-
-onMounted(() => {
-    // entries.value = getEntriesFromLocalStorage(); // On récupère les entrées du local storage
-
-    //TODO: Vérifier si les entrées n'ont pas déjà été traitées avant de les traiter
-    
-    if (entries.value.length > 0) { // Si il y a des entrées
-        treatEntries(); // alors on les traite
-    }
-})
-
-
 </script>

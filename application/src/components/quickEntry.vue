@@ -8,10 +8,7 @@
     flex flex-row items-center justify-between
     touch-none
     ">
-        <textarea
-        @keydown.enter.prevent="submitEntry"
-        placeholder="Qu'avez-vous en tête ?"
-        v-model="quickEntryInput" class="
+        <textarea @keydown.enter.prevent="submitEntry" placeholder="Qu'avez-vous en tête ?" v-model="quickEntryInput" class="
             inline-block
             h-16 w-4/5
             bg-transparent
@@ -44,9 +41,13 @@ export default {
 
     methods: {
         submitEntry() {
-            saveEntryToLocalStorage(this.quickEntryInput); // On sauvegarde l'entrée dans le local storage
-            treatEntry(this.quickEntryInput); // On traite les entrées
-            this.quickEntryInput = '';
+            if (this.quickEntryInput !== '' && this.quickEntryInput.length > 3) {
+
+                saveEntryToLocalStorage(this.quickEntryInput); // On sauvegarde l'entrée dans le local storage
+                treatEntry(this.quickEntryInput); // On traite les entrées
+                this.quickEntryInput = '';
+
+            }
         }
     }
 }

@@ -134,8 +134,6 @@ export const markdownToText = (markdownText) => {
                 return `${line.substring(6)}`;
             } else if (line.startsWith('######')) {
                 return `${line.substring(7)}`;
-            } else if (line.startsWith('* ') || line.startsWith('- ') || line.startsWith('+ ')) {
-                return `<li>${line.substring(2)}</li>`;
             } else {
                 return line;
             }
