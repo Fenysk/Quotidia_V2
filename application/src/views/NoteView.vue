@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             note: {},
-            isMarkdown: false,
+            isMarkdown: true,
             updateTimeout: null  // Ajoutez cette ligne
         }
     },
@@ -49,7 +49,7 @@ export default {
             const id = parseInt(this.$route.params.id)
 
             try {
-                
+
                 let notes = localStorage.getItem('notes')
                 notes = JSON.parse(notes)
                 const note = notes.find(note => note.id === id)
@@ -65,7 +65,7 @@ export default {
         markdownToHtml(text) {
             return markdownToHtml(text)
         },
-        
+
         switchToMarkdown() {
             this.isMarkdown = !this.isMarkdown;
             this.$nextTick(() => {
@@ -119,48 +119,65 @@ textarea {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .markdown {
 
     h1 {
         font-size: 2rem;
+        font-weight: bold;
         font-family: 'Architects Daughter', cursive;
+        margin-bottom: 1rem;
     }
 
     h2 {
-        font-size: 1.8rem;
+        font-size: 2rem;
         font-family: 'Architects Daughter', cursive;
+        margin-bottom: 1rem;
     }
 
     h3 {
         font-size: 1.6rem;
-        font-family: 'Architects Daughter', cursive;
     }
 
     h4 {
         font-size: 1.4rem;
-        font-family: 'Architects Daughter', cursive;
     }
 
     h5 {
         font-size: 1.2rem;
-        font-family: 'Architects Daughter', cursive;
     }
 
     h6 {
         font-size: 1rem;
-        font-family: 'Architects Daughter', cursive;
     }
 
     p {
         font-size: 1.2rem;
-        font-family: 'Architects Daughter', cursive;
     }
 
-    li {
-        font-size: 1.3rem;
-        font-family: 'Architects Daughter', cursive;
+    ul {
+        list-style: disc;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        margin-left: 1.3rem;
+
+        li {
+            font-size: 1.3rem;
+        }
     }
+
+    ol {
+        list-style: decimal;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        margin-left: 1.3rem;
+
+        li {
+            font-size: 1.3rem;
+        }
+    }
+
+
 }
 </style>
   
