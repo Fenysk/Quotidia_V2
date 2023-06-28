@@ -8,7 +8,8 @@
     flex flex-row items-center justify-between
     touch-none
     ">
-        <textarea @keydown.enter.prevent="submitEntry" placeholder="Qu'avez-vous en tête ?" v-model="quickEntryInput" class="
+        <textarea @keydown.enter.prevent="submitEntryIfCombination" placeholder="Qu'avez-vous en tête ?"
+            v-model="quickEntryInput" class="
             inline-block
             h-16 w-4/5
             bg-transparent
@@ -16,7 +17,7 @@
             placeholder:italic placeholder:text-slate-400 resize-none
             text-white
         " />
-        <button @click="console.log('quickEntryInput')" class="
+        <button @click="submitEntry" class="
             inline-block
             h-16 w-1/5
             bg-slate-700 text-white font-semibold
@@ -40,6 +41,12 @@ export default {
     },
 
     methods: {
+        submitEntryIfCombination(event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                this.submitEntry();
+            }
+        },
+        
         submitEntry() {
             if (this.quickEntryInput !== '' && this.quickEntryInput.length > 3) {
 
