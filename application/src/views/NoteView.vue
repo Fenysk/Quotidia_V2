@@ -3,13 +3,6 @@
     w-full h-full
     overflow-y-auto
     ">
-        <ul class="flex">
-            <li v-for="tag in note.tags" :key="tag.id" class="flex items-center gap-2 p-2">
-                <span @click="editTag(tag.id)" class="text-yellow-900 font-bold text-lg">#{{ tag.label }}</span>
-            </li>
-            <!-- TODO: Add tags -->
-        </ul>
-
         <input @keyup="saveNote"
             class="text-center font-bold mt-2 py-2 w-full bg-transparent focus:outline-none focus:border-transparent"
             v-model="note.title" placeholder="Note title" />

@@ -47,12 +47,13 @@
         ">
             <NotesSidebar class="h-full w-1/4" v-if="path.name === 'notes'" @sort="updateSortQuery"
                 @contain="updateContainQuery" @tags="updateTagsQuery" />
+            <NoteSidebar class="h-full w-1/4" v-if="path.name === 'note'" />
 
             <router-view :class="[
                 path.name === 'today' ? 'w-full' : '',
                 path.name === 'account' ? 'w-full' : '',
                 path.name === 'notes' ? 'w-3/4' : '',
-                path.name === 'note' ? 'w-full' : '',
+                path.name === 'note' ? 'w-3/4' : '',
             ]" v-slot="{ Component }" >
                 <Transition name="page-opacity" mode="out-in">
                     <component :is="Component" :searchQuery="searchQuery" :sortQuery="selectedSortQuery"
@@ -103,10 +104,12 @@
 import NotesHeader from '../Notes/NotesHeader.vue';
 import NoteHeader from '../Notes/NoteHeader.vue';
 import NotesSidebar from '../Notes/NotesSidebar.vue';
+import NoteSidebar from '../Notes/NoteSidebar.vue';
+
 
 export default {
     name: "MiddleBar",
-    components: { NotesHeader, NoteHeader, NotesSidebar },
+    components: { NotesHeader, NoteHeader, NotesSidebar, NoteSidebar },
 
     props: {
         path: String,

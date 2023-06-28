@@ -32,20 +32,20 @@
       <MiddleBar :path="path"
       :class="[
         path.name === 'account' ? 'w-full' : '',
-        path.name === 'today' ? 'w-4/6' : '',
-        path.name === 'notes' ? 'w-4/6' : '',
-        path.name === 'note' ? 'w-4/6' : '',
+        path.name === 'today' ? 'w-full' : '',
+        path.name === 'notes' ? 'w-full' : '',
+        path.name === 'note' ? 'w-full' : '',
         path.name === 'calendar' ? 'w-full' : '',
         path.name === 'journal' ? 'w-full' : '',
       ]"
       />
 
-      <RightBar class="w-2/6" :path="path"
+      <!-- <RightBar class="w-2/6" :path="path"
       v-if="
         path.name === 'today' ||
         path.name === 'notes' ||
         path.name === 'note'
-      "/>
+      "/> -->
 
     </div>
 

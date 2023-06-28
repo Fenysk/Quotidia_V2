@@ -1,6 +1,6 @@
 export const markdownToHtml = (text) => {
     if (!text) {
-        return ''; // Retourner une chaîne vide si le texte est indéfini ou vide
+        return 'Aucun texte'; // Retourner une chaîne vide si le texte est indéfini ou vide
     }
 
     const lines = text.split('\n');
@@ -82,6 +82,9 @@ export const markdownToHtml = (text) => {
                 return `<ol><li>${line.substring(line.indexOf('. ') + 2)}</li>`;
             }
         } else {
+            line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replacing **bold** with <strong>bold</strong>
+            line = line.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Replacing *italic* with <em>italic</em>
+
             if (inList) {
                 inList = false;
                 return `</ul><p>${line}</p>`;
@@ -103,7 +106,6 @@ export const markdownToHtml = (text) => {
     console.log(html);
     return html;
 };
-
 
 
 
