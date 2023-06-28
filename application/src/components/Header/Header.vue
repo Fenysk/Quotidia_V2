@@ -42,7 +42,7 @@ export default {
                         type: 'none',
                         action: () => console.log('None')
                     },
-                    color: 'green'
+                    color: 'blue'
                 };
             } else if (this.currentPage === 'Today') {
                 return {
@@ -58,7 +58,7 @@ export default {
                     },
                     color: 'blue'
                 };
-            } else if (this.currentPage === 'Test') {
+            } else if (this.currentPage === 'Calendar') {
                 return {
                     buttonLeft: {
                         title: 'Menu',
@@ -70,7 +70,21 @@ export default {
                         type: 'none',
                         action: () => console.log('None')
                     },
-                    color: 'pink'
+                    color: 'green'
+                }
+            } else if (this.currentPage === 'Journal') {
+                return {
+                    buttonLeft: {
+                        title: 'Menu',
+                        type: 'menu',
+                        action: () => this.openModal('Menu')
+                    },
+                    buttonRight: {
+                        title: 'None',
+                        type: 'none',
+                        action: () => console.log('None')
+                    },
+                    color: 'red'
                 };
             } else if (this.currentPage === 'Notes') {
                 return {
@@ -98,7 +112,7 @@ export default {
                         type: 'filters',
                         action: () => this.openModal('Filters')
                     },
-                    color: 'red'
+                    color: 'yellow'
                 };
             } else if (this.currentPage === '404') {
                 return {

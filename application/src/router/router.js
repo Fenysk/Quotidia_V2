@@ -6,7 +6,6 @@ import AccountView from '../views/AccountView.vue'
 import TodayView from '../views/TodayView.vue'
 import JournalView from '../views/JournalView.vue'
 import ErrorView from '../views/ErrorView.vue'
-import TestView from '../views/TestView.vue'
 import NotesView from '../views/NotesView.vue'
 import NoteView from '../views/NoteView.vue'
 import CalendarView from '../views/CalendarView.vue'
@@ -95,16 +94,6 @@ const routes = [
         component: CalendarView,
         meta: {
             title: 'Calendar',
-            requiresAuth: true
-        }
-    },
-
-    {
-        path: '/test',
-        name: 'test',
-        component: TestView,
-        meta: {
-            title: 'Test',
             requiresAuth: true
         }
     },
