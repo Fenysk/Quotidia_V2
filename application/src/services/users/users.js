@@ -25,3 +25,33 @@ export const getCurrentUser = async () => {
         throw new Error('Get user by id failed');
     }
 };
+
+export const updateUser = async (user) => {
+    try {
+        console.log('Try to update user...');
+        const data = {
+            name: user.name,
+            email: user.email,
+            password: user.password
+        }
+
+        const response = await axios.put(
+            `${API_URL}/users/${user.id}`,
+            user,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        localStorage.setItem('user', JSON.stringify(response.data));
+
+        console.log('Update user successful:', response.data);
+        return response.data;
+
+    } catch (error) {
+        console.error('Update user failed:', error);
+        throw new Error('Update user failed');
+    }
+};
