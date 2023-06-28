@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export const getUsers = async () => {
   try {
-    const users = await prisma.users.findMany();
+    const users = await prisma.user.findMany();
     return users;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -15,7 +15,7 @@ export const getUsers = async () => {
 export const getUserById = async (id) => {
   try {
     // get only the fields you need
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -51,7 +51,7 @@ export const getUserById = async (id) => {
 
 export const updateUser = async (id, data) => {
   try {
-    const user = await prisma.users.update({ where: { id }, data });
+    const user = await prisma.user.update({ where: { id }, data });
     return user;
   } catch (error) {
     console.error('Error updating user:', error);
@@ -61,7 +61,7 @@ export const updateUser = async (id, data) => {
 
 export const deleteUser = async (id) => {
   try {
-    const user = await prisma.users.delete({ where: { id } });
+    const user = await prisma.user.delete({ where: { id } });
     return user;
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -74,7 +74,7 @@ export const deleteUser = async (id) => {
 // Permet de mettre à jour le nombre de tokens utilisés par l'utilisateur
 export const updateUserOpenaiCost = async (id, openaiCost) => {
   try {
-    const user = await prisma.users.update({
+    const user = await prisma.user.update({
       where: { id },
       data: {
         openaiCost: {

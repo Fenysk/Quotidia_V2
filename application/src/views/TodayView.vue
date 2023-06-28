@@ -1,5 +1,8 @@
 <template>
-    <div id="today" class="w-full overflow-y-auto">
+    <div id="today" class="
+        w-full
+        overflow-y-auto
+    ">
         <div class="welcome mt-8 lg:mt-0">
             <h2 class="text-center font-bold">Bonjour, {{ user.username }}</h2>
             <h3 class="px-8 mt-6">Voici votre planning pour aujourd'hui :</h3>

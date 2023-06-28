@@ -1,7 +1,7 @@
 <template>
     <div id="notes" class="
-    bg-yellow-200 h-full
-    w-full
+    w-full h-full
+    overflow-y-auto
     ">
         <ul class="flex">
             <li v-for="tag in note.tags" :key="tag.id" class="flex items-center gap-2 p-2">
@@ -14,7 +14,7 @@
             class="text-center font-bold mt-2 py-2 w-full bg-transparent focus:outline-none focus:border-transparent"
             v-model="note.title" placeholder="Note title" />
 
-        <textarea ref="noteTextarea" v-show="!isMarkdown" @keyup="saveNote" @focusout="switchToMarkdown" class="w-full h-full px-4 mt-4 p-2 bg-transparent pre-wrap
+        <textarea ref="noteTextarea" v-show="!isMarkdown" @keyup="saveNote" @focusout="switchToMarkdown" class="px-4 mt-4 p-2 bg-transparent pre-wrap
             focus:outline-none focus:border-transparent
             " v-model="note.text" placeholder="Note text"></textarea>
 
@@ -115,6 +115,7 @@ input {
 
 textarea {
     min-width: 100%;
+    min-height: 70vh;
     resize: none;
 }
 </style>

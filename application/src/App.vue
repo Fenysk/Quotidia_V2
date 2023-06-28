@@ -16,45 +16,37 @@
 
   <!-- Desktop -->
   <div class="desktop hidden lg:flex flex-col" v-else>
-    <div
-      class="
-      screen flex flex-row gap-8 2xl:gap-16
+
+    <div class="
+      screen flex flex-row gap-[4%]
       w-full h-[calc(100vh-4rem)]
-      px-8 pt-12 2xl:px-96
+      pt-12 px-8 xl:px-[10%]
       bg-gradient-to-bl from-blue-300 to-cyan-400
+      transition-all duration-500
       ">
+
       <div class="left_bar h-full w-[60px]">
         <LeftBar />
       </div>
 
-      <div class="middle_bar h-full"
+      <MiddleBar :path="path"
       :class="[
-        path.meta.title === 'Today' ? 'w-4/6' : '',
-        path.meta.title === 'Account' ? 'w-full' : '',
-        path.meta.title === 'Notes' ? 'w-4/6' : '',
-        path.meta.title === 'Note' ? 'w-4/6' : '',
-        path.meta.title === 'Calendar' ? 'w-full' : '',
-        path.meta.title === 'Journal' ? 'w-full' : '',
-        path.meta.title === '404' ? 'w-full' : '',
+        path.name === 'account' ? 'w-full' : '',
+        path.name === 'today' ? 'w-4/6' : '',
+        path.name === 'notes' ? 'w-4/6' : '',
+        path.name === 'note' ? 'w-4/6' : '',
+        path.name === 'calendar' ? 'w-full' : '',
+        path.name === 'journal' ? 'w-full' : '',
       ]"
-      >
-        <MiddleBar :path="path" />
-      </div>
+      />
 
-      <div class="right_bar h-full
-      transition-all duration-500"
-      :class="[
-        path.meta.title === 'Today' ? 'w-2/6' : '',
-        path.meta.title === 'Account' ? 'w-0' : '',
-        path.meta.title === 'Notes' ? 'w-2/6' : '',
-        path.meta.title === 'Note' ? 'w-2/6' : '',
-        path.meta.title === 'Calendar' ? 'w-0' : '',
-        path.meta.title === 'Journal' ? 'w-0' : '',
-        path.meta.title === '404' ? 'w-0' : '',
-      ]"
-      >
-        <RightBar :path="path" />
-      </div>
+      <RightBar class="w-2/6" :path="path"
+      v-if="
+        path.name === 'today' ||
+        path.name === 'notes' ||
+        path.name === 'note'
+      "/>
+
     </div>
 
     <QuickEntry />

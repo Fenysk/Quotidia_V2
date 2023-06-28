@@ -1,5 +1,5 @@
 <template>
-    <div class="w-3/4 h-full flex">
+    <div class="h-full flex">
         <input type="text" v-model="searchQuery" @input="searchNotes" class="
           h-full w-full
           bg-transparent font-normal text-lg

@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export const registerUser = async (username, email, password) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.users.create({
+    const user = await prisma.user.create({
       data: {
         username,
         email,
@@ -48,7 +48,7 @@ export const registerUser = async (username, email, password) => {
 
 export const loginUser = async (username, password) => {
   try {
-    const user = await prisma.users.findUnique({ where: { username } });
+    const user = await prisma.user.findUnique({ where: { username } });
 
     if (!user) {
       throw new Error('User not found');

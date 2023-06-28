@@ -7,13 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   id         Int       @id @default(autoincrement())
   username   String?   @unique(map: "username") @db.VarChar(255)
   email      String?   @db.VarChar(255)
   password   String?   @db.VarChar(255)
   createdAt  DateTime? @default(now()) @db.DateTime(0)
-  updatedAt  DateTime? @default(now()) @updatedAt @db.DateTime(0)
+  updatedAt  DateTime? @default(now()) @db.DateTime(0)
   openaiCost Float?    @db.Float
   notes      Note[]
   Tag        Tag[]
@@ -25,7 +25,7 @@ model Tag {
   label  String?   @db.VarChar(255)
   color  String?   @db.VarChar(255)
   notes  NoteTag[]
-  Users  Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Tag_ibfk_1")
+  Users  User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Tag_ibfk_1")
 
   @@index([userId], map: "userId")
 }
@@ -43,7 +43,8 @@ model Note {
   state         String?   @db.VarChar(255)
   importance    Int?
   location      String?   @db.VarChar(255)
-  user          Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Note_ibfk_1")
+  isTask        Boolean?  @default(false)
+  user          User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Note_ibfk_1")
   tags          NoteTag[]
   Task          Task[]
 
@@ -53,8 +54,8 @@ model Note {
 model NoteTag {
   noteId Int
   tagId  Int
-  note   Note @relation(fields: [noteId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "NoteTag_ibfk_1")
-  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "NoteTag_ibfk_2")
+  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "NoteTag_ibfk_1")
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "NoteTag_ibfk_2")
 
   @@id([noteId, tagId])
   @@index([tagId], map: "tagId")
@@ -68,8 +69,8 @@ model Task {
   completedAt DateTime? @db.Date
   state       String?   @db.VarChar(255)
   orderNumber Int?
-  Note        Note?     @relation(fields: [noteId], references: [id], onDelete: Cascade, map: "Task_ibfk_1")
-  Task        Task?     @relation("TaskToTask", fields: [parentId], references: [id], map: "Task_ibfk_2")
+  Note        Note?     @relation(fields: [noteId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Task_ibfk_1")
+  Task        Task?     @relation("TaskToTask", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Task_ibfk_2")
   other_Task  Task[]    @relation("TaskToTask")
 
   @@index([noteId], map: "noteId")

@@ -1,32 +1,77 @@
 <template>
-    <div class="content h-full overflow-hidden transition-all duration-50
-    rounded-t-lg
-    " :class="[
-        path.meta.title === 'Today' ? '' : 'bg-gray-100',
-        path.meta.title === 'Account' ? 'bg-blue-100' : '',
-        path.meta.title === 'Notes' ? 'bg-orange-100' : '',
-        path.meta.title === 'Calendar' ? 'bg-green-100' : '',
-        path.meta.title === 'Journal' ? 'bg-red-100' : '',
-    ]">
+    <div :class="[
+        path.name === 'account' ? 'bg-blue-100' : '',
+        path.name === 'today' ? 'bg-transparent' : '',
+        path.name === 'notes' ? 'bg-yellow-100' : '',
+        path.name === 'note' ? 'bg-yellow-200' : '',
+        path.name === 'calendar' ? 'bg-green-100' : '',
+        path.name === 'journal' ? 'bg-red-100' : '',
+    ]" class="middle_bar
+        h-full
+        overflow-hidden
+        rounded-t-lg
+        transition-all duration-500
+    ">
+
         <header :class="[
-            path.meta.title === 'Today' ? 'h-0 py-0 overflow-hidden' : 'h-12 bg-gray-700',
-            path.meta.title === 'Account' ? 'bg-blue-700' : '',
-            path.meta.title === 'Notes' ? 'bg-yellow-700' : '',
-            path.meta.title === 'Note' ? 'bg-yellow-700' : '',
-            path.meta.title === 'Calendar' ? 'bg-green-700' : '',
-            path.meta.title === 'Journal' ? 'bg-red-700' : '',
+            path.name === 'account' ? 'bg-blue-700' : '',
+            path.name === 'today' ? 'h-0 overflow-hidden opacity-0' : '',
+            path.name === 'notes' ? 'bg-yellow-700' : '',
+            path.name === 'note' ? 'bg-yellow-700' : '',
+            path.name === 'calendar' ? 'bg-green-700' : '',
+            path.name === 'journal' ? 'bg-red-700' : '',
         ]" class="
+            h-16 opacity-100
+            flex flex-row justify-between items-center
+            transition-all duration-500
+        ">
+
+            <div class="header_name
+                h-16 w-1/4
+                flex flex-row items-center
+                px-4
+            ">
+                <h2 class="
+                    font-semibold text-xl text-white
+                ">{{ path.meta.title }}</h2>
+            </div>
+
+            <NotesHeader class="h-16 w-3/4" v-if="path.name === 'notes'" @search="updateSearchQuery" @sort="updateSortQuery"
+                @contain="updateContainQuery" @tags="updateTagsQuery" />
+            <NoteHeader class="h-16 w-3/4" v-if="path.name === 'note'" />
+
+        </header>
+
+        <div class="
+            flex flex-row h-[calc(100%-4rem)]
+        ">
+            <NotesSidebar class="h-full w-1/4" v-if="path.name === 'notes'" @sort="updateSortQuery"
+                @contain="updateContainQuery" @tags="updateTagsQuery" />
+
+            <router-view :class="[
+                path.name === 'today' ? 'w-full' : '',
+                path.name === 'account' ? 'w-full' : '',
+                path.name === 'notes' ? 'w-3/4' : '',
+                path.name === 'note' ? 'w-full' : '',
+            ]" v-slot="{ Component }" >
+                <Transition name="page-opacity" mode="out-in">
+                    <component :is="Component" :searchQuery="searchQuery" :sortQuery="selectedSortQuery"
+                        :containQuery="containOptionsQuery" :tagsQuery="selectedTagsQuery" />
+                </Transition>
+            </router-view>
+        </div>
+
+    </div>
+
+    <!-- <div class="content h-full overflow-hidden transition-all duration-50
+    rounded-t-lg ">
+        <header class="
             transition-all duration-500
             flex justify-between items-center
             font-bold text-xl text-white
             overflow-hidden
         ">
-            <p class="px-4 py-2 w-1/4">{{ path.meta.title }}</p>
-
-            <NotesHeader v-if="path.meta.title === 'Notes'" class="w-3/4" @search="updateSearchQuery" />
-            <NoteHeader v-if="path.meta.title === 'Note'" class="w-3/4" />
-
-
+            <p class="px-4 py-2 w-1/4">Test</p>
 
         </header>
 
@@ -35,19 +80,8 @@
         overflow-hidden
         ">
 
-            <NotesSidebar v-if="path.meta.title === 'Notes'" class="w-1/4"
-            @sort="updateSortQuery"
-            @contain="updateContainQuery"
-            @tags="updateTagsQuery" />
 
-
-            <div class="content" :class="[
-                path.meta.title === 'Today' ? 'w-full' : '',
-                path.meta.title === 'Account' ? 'w-full' : '',
-                path.meta.title === 'Notes' ? 'w-3/4' : '',
-                path.meta.title === 'Note' ? 'w-full' : '',
-                path.meta.title === 'Calendar' ? 'w-full' : '',
-            ]">
+            <div class="content" >
                 <router-view v-slot="{ Component }">
                     <Transition name="page-opacity" mode="out-in">
                         <component
@@ -61,7 +95,7 @@
                 </router-view>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
   
@@ -89,7 +123,7 @@ export default {
         updateSearchQuery(query) {
             this.searchQuery = query;
         },
-        
+
         updateSortQuery(query) {
             this.selectedSortQuery = query;
         },

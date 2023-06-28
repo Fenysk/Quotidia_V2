@@ -1,6 +1,6 @@
 <template>
     <div id="notes" class="
-    w-full h-full
+    w-full
     ">
         <ul class="p-2 flex flex-wrap gap-4 justify-center overflow-y-auto">
             <li v-for="note in notes" :key="note.id">

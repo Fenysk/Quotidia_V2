@@ -9,6 +9,7 @@ import ErrorView from '../views/ErrorView.vue'
 import TestView from '../views/TestView.vue'
 import NotesView from '../views/NotesView.vue'
 import NoteView from '../views/NoteView.vue'
+import CalendarView from '../views/CalendarView.vue'
 import { isValidToken } from '../services/auth/auth.js'
 
 const routes = [
@@ -84,6 +85,16 @@ const routes = [
         component: NoteView,
         meta: {
             title: 'Note',
+            requiresAuth: true
+        }
+    },
+
+    {
+        path: '/calendar',
+        name: 'calendar',
+        component: CalendarView,
+        meta: {
+            title: 'Calendar',
             requiresAuth: true
         }
     },
