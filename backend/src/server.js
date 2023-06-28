@@ -41,8 +41,8 @@ app.get('/', async (request, reply) => {
 // On démarre le serveur sur le port 3000
 const start = async () => {
     try {
-        await app.listen({ port: 3000, host: '0.0.0.0' });
-        console.log('Server is running on http://localhost:3000');
+        await app.listen({ port: process.env.PORT || 3000, host: '0.0.0.0' });
+        console.log(`Server listening on port ${process.env.PORT || 3000}`);
     } catch (err) {
         console.error('Error starting server:', err); // On affiche l'erreur dans la console
         process.exit(1);
