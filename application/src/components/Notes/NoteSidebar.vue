@@ -1,6 +1,5 @@
 <template>
     <div class="px-4 py-8 overflow-auto">
-        <pre>{{ note }}</pre>
 
         <div class="dates
             mb-4
@@ -46,7 +45,7 @@
 
             <ul class="flex flex-col gap-2">
                 <li v-for="task in note.tasks" :key="task.id" class="flex items-center gap-2 p-2">
-                    <span>{{ task.label }}</span>
+                    <span>{{ task.task }}</span>
                 </li>
             </ul>
 

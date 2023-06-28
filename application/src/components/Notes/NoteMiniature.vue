@@ -55,7 +55,7 @@ export default {
             this.$router.push('/notes/' + id);
         },
 
-        markdownToText (markdown) {
+        markdownToText(markdown) {
             return markdownToText(markdown)
         }
     }

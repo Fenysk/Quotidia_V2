@@ -23,8 +23,8 @@ export const getNotes = async () => {
         console.log('Notes retrieved :\n', notes);
         return notes;
     } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
+        console.error('getNotes failed:', error);
+        throw new Error('getNotes failed');
     }
 };
 
@@ -45,8 +45,41 @@ export const getTodayNotes = async () => {
         console.log('Today notes retrieved :\n', response.data);
         return response.data;
     } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
+        console.error('getTodayNotes failed:', error);
+        throw new Error('getTodayNotes failed');
+    }
+};
+
+export const getNotesWithDeadline = async (currentDate) => {
+    try {
+        console.log('Try to get notes with deadline');
+        const response = await axios.post(
+            `${API_URL}/notes/deadline`,
+            {
+                currentDate: currentDate
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        // trier les notes par date de deadline
+        response.data.sort((a, b) => {
+            if (a.deadlineAt < b.deadlineAt) {
+                return -1;
+            }
+            if (a.deadlineAt > b.deadlineAt) {
+                return 1;
+            }
+            return 0;
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('getNotesWithDeadline failed:', error);
+        throw new Error('getNotesWithDeadline failed');
     }
 };
 
@@ -65,8 +98,8 @@ export const getNoteById = async (noteId) => {
         console.log('Note retrieved :\n', response.data);
         return response.data;
     } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
+        console.error('getNoteById failed:', error);
+        throw new Error('getNoteById failed');
     }
 };
 
@@ -89,8 +122,8 @@ export const createNote = async () => {
         console.log('Note created :\n', response.data);
         return response.data;
     } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
+        console.error('createNote failed:', error);
+        throw new Error('createNote failed');
     }
 };
 
@@ -112,8 +145,8 @@ export const setStateNote = async (noteId, state) => {
         console.log('Note state set :\n', response.data);
         return response.data;
     } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
+        console.error('setStateNote failed:', error);
+        throw new Error('setStateNote failed');
     }
 };
 
@@ -136,7 +169,7 @@ export const updateNote = async (note) => {
         console.log('Note updated :\n', response.data);
         return response.data;
     } catch (error) {
-        console.error('Registration failed:', error);
-        throw new Error('Registration failed');
+        console.error('updateNote failed:', error);
+        throw new Error('updateNote failed');
     }
 };

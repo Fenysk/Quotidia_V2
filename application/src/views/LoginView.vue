@@ -1,7 +1,11 @@
 <template>
-    <div>
-        <h1>Login</h1>
-        <form @submit.prevent="login">
+    <div id="Login" class="
+        flex flex-col justify-center items-center
+        h-screen w-screen
+        bg-gray-100
+    ">
+        <h1 class="text-xl mb-4">Login</h1>
+        <form @submit.prevent="login" class="flex flex-col gap-2 mb-4">
             <input type="text" v-model="username" placeholder="Username" />
             <input type="password" v-model="password" placeholder="Password" />
             <button type="submit">Login</button>
@@ -38,3 +42,13 @@ export default {
 }
 </script>
   
+
+<style lang="scss" scoped>
+button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+</style>

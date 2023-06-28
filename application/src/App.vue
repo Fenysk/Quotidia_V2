@@ -1,6 +1,6 @@
 <template>
   <!-- Mobile -->
-  <div class="mobile flex flex-col lg:hidden" v-if="screenType === 'mobile'">
+  <div class="mobile flex flex-col lg:hidden" v-if="screenType === 'mobile' && token !== null">
     <Header @openModal="openModal" />
 
     <HeaderMenu v-if="modalMenuShow" @openModal="openModal" />
@@ -15,7 +15,9 @@
   </div>
 
   <!-- Desktop -->
-  <div class="desktop hidden lg:flex flex-col" v-else>
+  <div class="desktop hidden lg:flex flex-col"
+  v-if="screenType !== 'mobile' && token !== null"
+  >
 
     <div class="
       screen flex flex-row gap-[4%]
@@ -51,6 +53,14 @@
 
     <QuickEntry />
   </div>
+
+  <div v-else>
+    <router-view v-slot="{ Component }" class="w-full">
+      <Transition name="page-opacity" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </router-view>
+  </div>
 </template>
 
 <script>
@@ -79,6 +89,7 @@ export default {
       modalMenu: false,
       screenType: "mobile",
       path: this.$route,
+      token: null,
     };
   },
 
@@ -92,17 +103,23 @@ export default {
     updateScreenType() {
       this.screenType = window.innerWidth < 1024 ? "mobile" : "desktop";
     },
+    
+    async checkToken() {
+      this.token = await localStorage.getItem('token');
+    }
   },
 
   watch: {
     $route() {
       this.path = this.$route;
-    }
+    },
   },
 
   mounted() {
     this.updateScreenType();
     window.addEventListener("resize", this.updateScreenType);
+
+    setInterval(this.checkToken, 100);
   },
 
   beforeDestroy() {

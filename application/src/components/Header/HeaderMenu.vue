@@ -9,9 +9,6 @@
                     <router-link @click="openModal('Menu')" to="/notes">Notes</router-link>
                 </li>
                 <li class="border-y-2 border-black py-2 px-[10%] w-full">
-                    <router-link @click="openModal('Menu')" to="/calendar">Calendrier</router-link>
-                </li>
-                <li class="border-y-2 border-black py-2 px-[10%] w-full">
                     <router-link @click="openModal('Menu')" to="/journal">Journal</router-link>
                 </li>
                 <li class="border-y-2 border-black py-2 px-[10%] w-full">

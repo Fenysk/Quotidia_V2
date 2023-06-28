@@ -39,6 +39,8 @@
             <NotesHeader class="h-16 w-3/4" v-if="path.name === 'notes'" @search="updateSearchQuery" @sort="updateSortQuery"
                 @contain="updateContainQuery" @tags="updateTagsQuery" />
             <NoteHeader class="h-16 w-3/4" v-if="path.name === 'note'" />
+            <CalendarHeader class="h-16 w-3/4" v-if="path.name === 'calendar'" @prevMonth="prevMonth"
+                @nextMonth="nextMonth" :currentDate="currentDate" />
 
         </header>
 
@@ -48,16 +50,18 @@
             <NotesSidebar class="h-full w-1/4" v-if="path.name === 'notes'" @sort="updateSortQuery"
                 @contain="updateContainQuery" @tags="updateTagsQuery" />
             <NoteSidebar class="h-full w-1/4" v-if="path.name === 'note'" />
+            <CalendarSidebar class="h-full w-1/4" v-if="path.name === 'calendar'" :notes="notes" />
 
             <router-view :class="[
                 path.name === 'today' ? 'w-full' : '',
                 path.name === 'account' ? 'w-full' : '',
                 path.name === 'notes' ? 'w-3/4' : '',
                 path.name === 'note' ? 'w-3/4' : '',
+                path.name === 'calendar' ? 'w-3/4' : '',
             ]" v-slot="{ Component }" >
                 <Transition name="page-opacity" mode="out-in">
                     <component :is="Component" :searchQuery="searchQuery" :sortQuery="selectedSortQuery"
-                        :containQuery="containOptionsQuery" :tagsQuery="selectedTagsQuery" />
+                        :containQuery="containOptionsQuery" :tagsQuery="selectedTagsQuery" :currentDate="currentDate" :notes="notes" @updateNotes="updateNotes" />
                 </Transition>
             </router-view>
         </div>
@@ -105,11 +109,13 @@ import NotesHeader from '../Notes/NotesHeader.vue';
 import NoteHeader from '../Notes/NoteHeader.vue';
 import NotesSidebar from '../Notes/NotesSidebar.vue';
 import NoteSidebar from '../Notes/NoteSidebar.vue';
+import CalendarHeader from '../Header/Calendar/CalendarHeader.vue';
+import CalendarSidebar from '../Header/Calendar/CalendarSidebar.vue';
 
 
 export default {
     name: "MiddleBar",
-    components: { NotesHeader, NoteHeader, NotesSidebar, NoteSidebar },
+    components: { NotesHeader, NoteHeader, NotesSidebar, NoteSidebar, CalendarHeader, CalendarSidebar },
 
     props: {
         path: String,
@@ -120,6 +126,9 @@ export default {
             selectedSortQuery: "recent",
             containOptionsQuery: [],
             selectedTagsQuery: [],
+
+            currentDate: new Date(),
+            notes: [],
         };
     },
     methods: {
@@ -137,6 +146,18 @@ export default {
 
         updateTagsQuery(query) {
             this.selectedTagsQuery = query;
+        },
+
+        nextMonth() {
+            this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, this.currentDate.getDate());
+        },
+
+        prevMonth() {
+            this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, this.currentDate.getDate());
+        },
+
+        updateNotes(notes) {
+            this.notes = notes;
         },
     }
 };

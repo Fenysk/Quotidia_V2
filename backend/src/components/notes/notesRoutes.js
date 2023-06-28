@@ -1,4 +1,4 @@
-import { getNotes, getNoteById, updateNote, deleteNote, getTodayNotes, createNote } from './notesService.js';
+import { getNotes, getNotesWithDeadline, getNoteById, updateNote, deleteNote, getTodayNotes, createNote } from './notesService.js';
 import { middlewareToken } from '../../middleware/token.js';
 
 export default function notesRoutes(app) {
@@ -31,6 +31,24 @@ export default function notesRoutes(app) {
 
             console.log('GET /notes/today');
             const notes = await getTodayNotes(userId);
+
+            reply.send(notes);
+        });
+
+
+    app.post(
+
+        '/notes/deadline', // Route
+
+        { preHandler: middlewareToken }, // Middleware
+
+        async (request, reply) => { // Handler
+
+            const userId = request.userId;
+            const currentDate = request.body.currentDate;
+
+            console.log('POST /notes/deadline');
+            const notes = await getNotesWithDeadline(userId, currentDate);
 
             reply.send(notes);
         });

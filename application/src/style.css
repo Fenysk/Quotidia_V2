@@ -1,3 +1,29 @@
-html, body {
+/* Styles généraux pour toutes les tailles d'écran */
+html,
+body {
     overflow: hidden;
+}
+
+/* Styles spécifiques pour les écrans de bureau de 1024px et plus */
+@media (min-width: 1024px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #00000000;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #00000055;
+        border-radius: 3px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #00000099;
+    }
 }

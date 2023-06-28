@@ -86,6 +86,54 @@ export const getTodayNotes = async (userId) => {
     }
 };
 
+export const getNotesWithDeadline = async (userId, currentDate) => {
+    try {
+        console.log('currentDate:', currentDate);
+        const date = new Date(currentDate);
+        console.log('date:', date);
+
+        const startMonth = new Date(date.getFullYear(), date.getMonth(), 1); // First day of the month
+        const endMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1); // Last day of the month
+
+        const notes = await prisma.note.findMany({
+            where: {
+                userId,
+                OR: [
+                    { state: null },
+                    { state: 'archived' }
+                ],
+                deadlineAt: {
+                    gte: startMonth,
+                    lt: endMonth
+                }
+            },
+            include: {
+                Task: true,
+                tags: {
+                    include: {
+                        tag: true
+                    }
+                }
+            }
+        });
+
+        const notesRenamed = notes.map(note => {
+            return {
+                ...note,
+                tasks: note.Task,
+                Task: undefined,
+                tags: note.tags.map(noteTag => noteTag.tag), // On utilise 'noteTag.tag' car on passe par la relation 'NoteTag'
+            };
+        });
+
+        console.log('notes:', notesRenamed);
+        return notesRenamed;
+    } catch (error) {
+        console.error('Error retrieving notes with deadline:', error);
+        throw new Error('Failed to retrieve notes with deadline');
+    }
+};
+
 export const getNoteById = async (noteId) => {
     try {
         const note = await prisma.note.findUnique({
