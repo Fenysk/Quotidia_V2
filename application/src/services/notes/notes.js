@@ -127,6 +127,31 @@ export const createNote = async () => {
     }
 };
 
+export const createNoteWithDeadline = async (deadline) => {
+    try {
+        console.log('Try to create note with deadline');
+        const response = await axios.post(
+            `${API_URL}/notes`,
+            {
+                title: 'Evenement du ' + new Date(deadline).toLocaleDateString(),
+                text: 'Texte de la note',
+                deadlineAt: deadline
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+
+        console.log('Note created :\n', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('createNoteWithDeadline failed:', error);
+        throw new Error('createNoteWithDeadline failed');
+    }
+};
+
 export const setStateNote = async (noteId, state) => {
     try {
         console.log('Try to set state note');

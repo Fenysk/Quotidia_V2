@@ -14,14 +14,13 @@
     ">
 
         <header :class="[
-            path.name === 'account' ? 'bg-blue-700' : '',
+            path.name === 'account' ? 'h-16 bg-blue-700 opacity-100' : '',
             path.name === 'today' ? 'h-0 overflow-hidden opacity-0' : '',
-            path.name === 'notes' ? 'bg-yellow-700' : '',
-            path.name === 'note' ? 'bg-yellow-700' : '',
-            path.name === 'calendar' ? 'bg-green-700' : '',
-            path.name === 'journal' ? 'bg-red-700' : '',
+            path.name === 'notes' ? 'h-16 bg-yellow-700 opacity-100' : '',
+            path.name === 'note' ? 'h-16 bg-yellow-700 opacity-100' : '',
+            path.name === 'calendar' ? 'h-16 bg-green-700 opacity-100' : '',
+            path.name === 'journal' ? 'h-16 bg-red-700 opacity-100' : '',
         ]" class="
-            h-16 opacity-100
             flex flex-row justify-between items-center
             transition-all duration-500
         ">
@@ -39,8 +38,8 @@
             <NotesHeader class="h-16 w-3/4" v-if="path.name === 'notes'" @search="updateSearchQuery" @sort="updateSortQuery"
                 @contain="updateContainQuery" @tags="updateTagsQuery" />
             <NoteHeader class="h-16 w-3/4" v-if="path.name === 'note'" />
-            <CalendarHeader class="h-16 w-3/4" v-if="path.name === 'calendar'" @prevMonth="prevMonth"
-                @nextMonth="nextMonth" :currentDate="currentDate" />
+            <CalendarHeader class="h-16 w-3/4" v-if="path.name === 'calendar'" @prevMonth="prevMonth" @nextMonth="nextMonth"
+                :currentDate="currentDate" />
 
         </header>
 
@@ -58,49 +57,16 @@
                 path.name === 'notes' ? 'w-3/4' : '',
                 path.name === 'note' ? 'w-3/4' : '',
                 path.name === 'calendar' ? 'w-3/4' : '',
-            ]" v-slot="{ Component }" >
+            ]" v-slot="{ Component }">
                 <Transition name="page-opacity" mode="out-in">
                     <component :is="Component" :searchQuery="searchQuery" :sortQuery="selectedSortQuery"
-                        :containQuery="containOptionsQuery" :tagsQuery="selectedTagsQuery" :currentDate="currentDate" :notes="notes" @updateNotes="updateNotes" />
+                        :containQuery="containOptionsQuery" :tagsQuery="selectedTagsQuery" :currentDate="currentDate"
+                        :notes="notes" @updateNotes="updateNotes" />
                 </Transition>
             </router-view>
         </div>
 
     </div>
-
-    <!-- <div class="content h-full overflow-hidden transition-all duration-50
-    rounded-t-lg ">
-        <header class="
-            transition-all duration-500
-            flex justify-between items-center
-            font-bold text-xl text-white
-            overflow-hidden
-        ">
-            <p class="px-4 py-2 w-1/4">Test</p>
-
-        </header>
-
-        <div class="content flex
-        h-[calc(100%-3rem)]
-        overflow-hidden
-        ">
-
-
-            <div class="content" >
-                <router-view v-slot="{ Component }">
-                    <Transition name="page-opacity" mode="out-in">
-                        <component
-                        :is="Component"
-                        :searchQuery="searchQuery"
-                        :sortQuery="selectedSortQuery"
-                        :containQuery="containOptionsQuery"
-                        :tagsQuery="selectedTagsQuery"
-                        />
-                    </Transition>
-                </router-view>
-            </div>
-        </div>
-    </div> -->
 </template>
 
   

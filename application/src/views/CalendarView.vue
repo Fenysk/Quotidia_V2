@@ -1,6 +1,7 @@
 <template>
     <div class="w-full h-full">
         <div class="w-full h-full overflow-auto pb-8">
+
             <table class="w-full h-full table-fixed">
                 <thead class="bg-green-700 text-white">
                     <tr>
@@ -13,12 +14,13 @@
                         <th class="py-4 px-4 border-b border-gray-300">Dim</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr v-for="week in calendarMonth" :key="week">
                         <td v-for="day in week" :key="day" class="border-b border-gray-300">
                             <div class="w-full h-full">
-                                <p class="py-4 px-4 text-green-900"
-                                    :class="(new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth()) ? 'text-red-600 text-2xl font-bold' : 'text-xl font-semibold'">
+                                <p class="py-4 px-4 text-green-900 cursor-pointer hover:text-red-600" @click="createNote(day)"
+                                    :class="(new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth()) && new Date().getFullYear() === currentDate.getFullYear() ? 'text-red-600 text-2xl font-bold' : 'text-xl font-semibold'">
                                     {{ day }} </p>
                                 <ul class="pr-1">
                                     <li v-for="note in notes" :key="note.title" class="mt-2">
@@ -37,22 +39,11 @@
             </table>
 
         </div>
-
-        <div class="notes mt-8">
-            <h2 class="text-2xl font-bold">Notes</h2>
-            <ul>
-                <li v-for="note in notes" :key="note.title">
-                    <div class="bg-yellow-200 p-2 rounded">
-                        {{ note.title }}
-                    </div>
-                </li>
-            </ul>
-        </div>
     </div>
 </template>
   
 <script>
-import { getNotesWithDeadline } from '../services/notes/notes';
+import { getNotesWithDeadline, createNoteWithDeadline } from '../services/notes/notes';
 
 export default {
     name: "CalendarView",
@@ -81,6 +72,12 @@ export default {
     },
 
     methods: {
+        async createNote(day) {
+            const deadline = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day, 7).toISOString();
+            const note = await createNoteWithDeadline(deadline);
+            this.$router.push('/notes/' + note.id);
+        },
+
         async updateNotes() {
             this.$emit('updateNotes', await getNotesWithDeadline(this.currentDate));
         },

@@ -168,13 +168,14 @@ export const getNoteById = async (noteId) => {
 export const createNote = async (userId, noteData) => {
     try {
         // On sépare les données de la note
-        const { title, text } = noteData;
+        const { title, text, deadlineAt } = noteData;
 
         const note = await prisma.note.create({
             data: {
                 userId,
                 title,
-                text
+                text,
+                deadlineAt
             }
         });
         return note;
